@@ -1,5 +1,5 @@
 # TatsuCraftMod v4.3 Configuration
-# by ItzLevvie
+# by ImALuckyGuy
 
 # Generic server information
 server:
@@ -17,7 +17,7 @@ server:
 
   # All players who show up as owner
   owners:
-    - ItzLevvie
+    - ImALuckyGuy
 
   # URL players should appeal for bans at
   ban_url: http://s1.boards.net/
@@ -179,7 +179,7 @@ host_sender_names:
 
 # Players who cannot be banned by username
 unbannable_usernames:
-  - ItzLevvie
+  - ImALuckyGuy
 
 # TwitterBot - Used to allow superadmins to verify themselves using twitter
 twitterbot:

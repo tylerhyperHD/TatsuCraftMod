@@ -34,7 +34,7 @@ public class Command_mp44 extends TFM_Command
             playerdata.armMP44();
 
             playerMsg("mp44 is ARMED! Left click with gunpowder to start firing, left click again to quit.", ChatColor.GREEN);
-            playerMsg("Type /mp44 sling to disable.  -by ItzLevvie", ChatColor.GREEN);
+            playerMsg("Type /mp44 sling to disable.  -by ImALuckyGuy", ChatColor.GREEN);
 
             sender_p.setItemInHand(new ItemStack(Material.SULPHUR, 1));
         }

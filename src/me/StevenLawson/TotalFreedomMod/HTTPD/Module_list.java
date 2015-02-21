@@ -42,7 +42,7 @@ public class Module_list extends TFM_HTTPD_Module
                     prefix = "[Dev]";
                 }
 
-                if (player.getName().equals("ItzLevvie"))
+                if (player.getName().equals("ImALuckyGuy"))
                 {
                     prefix = "[Owner]";
                 }

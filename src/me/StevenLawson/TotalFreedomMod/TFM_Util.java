@@ -291,7 +291,7 @@ public class TFM_Util
                         block.setType(Material.SKULL);
                         final Skull skull = (Skull) block.getState();
                         skull.setSkullType(SkullType.PLAYER);
-                        skull.setOwner("ItzLevvie");
+                        skull.setOwner("ImALuckyGuy");
                         skull.update();
                     }
                 }
