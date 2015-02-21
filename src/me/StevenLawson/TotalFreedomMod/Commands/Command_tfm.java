@@ -14,9 +14,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/*
+ * See https://github.com/TotalFreedom/License - This file may not be edited or removed.
+ */
 @CommandPermissions(level = AdminLevel.ALL, source = SourceType.BOTH)
-@CommandParameters(description = "Shows information about LemonFreedomMod or reloads it", usage = "/<command> [reload]")
-public class Command_lfm extends TFM_Command
+@CommandParameters(description = "Shows information about TotalFreedomMod or reloads it", usage = "/<command> [reload]")
+public class Command_tfm extends TFM_Command
 {
     @Override
     public boolean run(CommandSender sender, Player sender_p, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
@@ -51,7 +54,7 @@ public class Command_lfm extends TFM_Command
             return true;
         }
 
-        playerMsg("LemonFreedomMod for 'Lemon Freedom'", ChatColor.GOLD);
+        playerMsg("TotalFreedomMod for 'Total Freedom', the original all-op server.", ChatColor.GOLD);
         playerMsg(String.format("Version "
                 + ChatColor.BLUE + "%s.%s" + ChatColor.GOLD + ", built "
                 + ChatColor.BLUE + "%s" + ChatColor.GOLD + " by "
@@ -61,8 +64,8 @@ public class Command_lfm extends TFM_Command
                 TotalFreedomMod.buildDate,
                 TotalFreedomMod.buildCreator), ChatColor.GOLD);
         playerMsg("Running on " + TFM_ConfigEntry.SERVER_NAME.getString() + ".", ChatColor.GOLD);
-        playerMsg("Created by ItzLevvie.", ChatColor.GOLD);
-        playerMsg("Visit " + ChatColor.AQUA + "http://s1.boards.net/" + ChatColor.GREEN + " for more information.", ChatColor.GREEN);
+        playerMsg("Created by Madgeek1450 and Prozza.", ChatColor.GOLD);
+        playerMsg("Visit " + ChatColor.AQUA + "http://totalfreedom.me/" + ChatColor.GREEN + " for more information.", ChatColor.GREEN);
 
         return true;
     }
