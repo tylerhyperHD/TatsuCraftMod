@@ -94,7 +94,7 @@ public class Module_help extends TFM_HTTPD_Module
             AdminLevel lastTfmCommandLevel = null;
             for (Command command : commands)
             {
-                if ("LemonFreedomMod".equals(pluginName))
+                if ("TatsuCraftMod".equals(pluginName))
                 {
                     AdminLevel tfmCommandLevel = ((TFM_DynamicCommand) command).getCommandInfo().getLevel();
                     if (lastTfmCommandLevel == null || lastTfmCommandLevel != tfmCommandLevel)
@@ -138,7 +138,7 @@ public class Module_help extends TFM_HTTPD_Module
     @Override
     public String getTitle()
     {
-        return "LemonFreedomMod :: Command Help";
+        return "TatsuCraftMod :: Command Help";
     }
 
     @Override

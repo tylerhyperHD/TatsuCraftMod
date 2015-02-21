@@ -640,7 +640,7 @@ public class TFM_AdminList
             {
                 if (verbose)
                 {
-                    TFM_Util.adminAction("LemonFreedomMod", "Deactivating superadmin " + superadmin.getLastLoginName() + ", inactive for " + lastLoginHours + " hours.", true);
+                    TFM_Util.adminAction("TatsuCraftMod", "Deactivating superadmin " + superadmin.getLastLoginName() + ", inactive for " + lastLoginHours + " hours.", true);
                 }
 
                 superadmin.setActivated(false);

@@ -105,6 +105,6 @@ public class Module_dump extends TFM_HTTPD_Module
     @Override
     public String getTitle()
     {
-        return "LemonFreedomMod :: Request Debug Dumper";
+        return "TatsuCraftMod :: Request Debug Dumper";
     }
 }

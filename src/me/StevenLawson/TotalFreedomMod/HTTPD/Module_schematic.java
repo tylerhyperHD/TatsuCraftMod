@@ -54,7 +54,7 @@ public class Module_schematic extends TFM_HTTPD_Module
 
     public String title()
     {
-        return "LemonFreedomMod :: Schematic Manager";
+        return "TatsuCraftMod :: Schematic Manager";
     }
 
     public String body() throws ResponseOverrideException

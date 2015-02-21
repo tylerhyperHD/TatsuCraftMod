@@ -65,7 +65,7 @@ public class TotalFreedomMod extends JavaPlugin
     @Override
     public void onEnable()
     {
-        TFM_Log.info("Made by ItzLevvie");
+        TFM_Log.info("Made by ImALuckyGuy");
         TFM_Log.info("Compiled " + buildDate + " by " + buildCreator);
 
         final TFM_Util.MethodTimer timer = new TFM_Util.MethodTimer();
