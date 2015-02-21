@@ -20,6 +20,8 @@ public enum TFM_PlayerRank
     OWNER("the " + ChatColor.BLUE + "Owner", ChatColor.BLUE + "[Owner]"),
     PERV("a " + ChatColor.LIGHT_PURPLE + "Pervert", ChatColor.LIGHT_PURPLE + "[Pervert]"),
     NUB(ChatColor.RED + "Nub", ChatColor.LIGHT_PURPLE + "[Pervert]"),
+    SADEV("a " + ChatColor.GOLD + "Super Admin" + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Developer", ChatColor.GOLD + "[SA]"),
+    STADEV("a " + ChatColor.DARK_GREEN + "Super Telnet Admin" + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Developer", ChatColor.DARK_GREEN + "[STA]"), //Not used right now
     CONSOLE("The " + ChatColor.DARK_PURPLE + "Console", ChatColor.DARK_PURPLE + "[Console]");
     private String loginMessage;
     private String prefix;
@@ -96,6 +98,15 @@ public enum TFM_PlayerRank
             {
                 return NUB;
             }
+            if (sender.getName().equals("xDestroyer217"))
+            {
+                return SADEV;
+            }
+            if (sender.getName().equals("Got_No_Friends"))
+            {
+                return SADEV;
+            }
+            
             
             if (entry.isSeniorAdmin())
             {
