@@ -37,7 +37,7 @@ public class TotalFreedomMod extends JavaPlugin
     public static final String YOU_ARE_NOT_OP = me.StevenLawson.TotalFreedomMod.Commands.TFM_Command.YOU_ARE_NOT_OP;
     public static String buildNumber = "1";
     public static String buildDate = TotalFreedomMod.buildDate = TFM_Util.dateToString(new Date());
-    public static String buildCreator = "ImALuckyGuy, xDestroyer217, cowgomooo12, tylerhyperHD, and Got_No_Friends";
+    public static String buildCreator = "ItzLevvie";
     public static Server server;
     public static TotalFreedomMod plugin;
     public static String pluginName;
