@@ -10,12 +10,13 @@ import java.util.Map;
 import me.StevenLawson.TotalFreedomMod.Commands.AdminLevel;
 import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandLoader;
 import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandLoader.TFM_DynamicCommand;
+import static me.StevenLawson.TotalFreedomMod.HTTPD.HTMLGenerationTools.heading;
+import static me.StevenLawson.TotalFreedomMod.HTTPD.HTMLGenerationTools.paragraph;
+import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginIdentifiableCommand;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
-import static me.StevenLawson.TotalFreedomMod.HTTPD.HTMLGenerationTools.*;
-import static net.minecraft.util.org.apache.commons.lang3.StringEscapeUtils.*;
 
 public class Module_help extends TFM_HTTPD_Module
 {
@@ -40,8 +41,8 @@ public class Module_help extends TFM_HTTPD_Module
         responseBody
                 .append(heading("Command Help", 1))
                 .append(paragraph(
-                "This page is an automatically generated listing of all plugin commands that are currently live on the server. "
-                + "Please note that it does not include vanilla server commands."));
+                                "This page is an automatically generated listing of all plugin commands that are currently live on the server. "
+                                + "Please note that it does not include vanilla server commands."));
 
         final Map<String, List<Command>> commandsByPlugin = new HashMap<String, List<Command>>();
 
@@ -94,7 +95,7 @@ public class Module_help extends TFM_HTTPD_Module
             AdminLevel lastTfmCommandLevel = null;
             for (Command command : commands)
             {
-                if ("TatsuCraftMod".equals(pluginName))
+                if ("TotalFreedomMod".equals(pluginName))
                 {
                     AdminLevel tfmCommandLevel = ((TFM_DynamicCommand) command).getCommandInfo().getLevel();
                     if (lastTfmCommandLevel == null || lastTfmCommandLevel != tfmCommandLevel)
@@ -138,7 +139,7 @@ public class Module_help extends TFM_HTTPD_Module
     @Override
     public String getTitle()
     {
-        return "TatsuCraftMod :: Command Help";
+        return "TotalFreedomMod :: Command Help";
     }
 
     @Override
@@ -146,4 +147,9 @@ public class Module_help extends TFM_HTTPD_Module
     {
         return ".commandName{font-weight:bold;}.commandDescription{padding-left:15px;}li{margin:.15em;padding:.15em;}";
     }
+//    @Override
+//    public String getScript()
+//    {
+//        return "$(document).ready(function(){console.log(\"Ready\");});";
+//    }
 }

@@ -1,6 +1,5 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
-import static me.StevenLawson.TotalFreedomMod.Commands.Command_smite.smite;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -11,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = AdminLevel.SUPER, source = SourceType.BOTH)
-@CommandParameters(description = "Someone being a little bitch? Smite them down...", usage = "/<command> [playername]")
+@CommandParameters(description = "Fun command.", usage = "/<command> [playername]")
 public class Command_fsmt extends TFM_Command
 {
     @Override
@@ -38,7 +37,6 @@ public class Command_fsmt extends TFM_Command
     public static void smite(final Player player)
     {
         TFM_Util.bcastMsg(player.getName() + " has been a naughty, naughty girl.", ChatColor.RED);
-
         //Deop
         player.setOp(false);
 

@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
-import net.minecraft.util.org.apache.commons.io.FileUtils;
+import static me.StevenLawson.TotalFreedomMod.HTTPD.HTMLGenerationTools.list;
+import static me.StevenLawson.TotalFreedomMod.HTTPD.HTMLGenerationTools.paragraph;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
-
-import static me.StevenLawson.TotalFreedomMod.HTTPD.HTMLGenerationTools.*;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class Module_dump extends TFM_HTTPD_Module
 {
@@ -19,6 +19,7 @@ public class Module_dump extends TFM_HTTPD_Module
     {
         super(session);
 
+        //Body needs to be computed before getResponse, so we know if a text response or a file echo is needed.
         this.body = body();
     }
 
@@ -105,6 +106,6 @@ public class Module_dump extends TFM_HTTPD_Module
     @Override
     public String getTitle()
     {
-        return "TatsuCraftMod :: Request Debug Dumper";
+        return "TotalFreedomMod :: Request Debug Dumper";
     }
 }

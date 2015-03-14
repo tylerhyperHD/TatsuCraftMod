@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
-import net.minecraft.server.v1_7_R4.MinecraftServer;
-import net.minecraft.server.v1_7_R4.PropertyManager;
+import net.minecraft.server.v1_8_R1.MinecraftServer;
+import net.minecraft.server.v1_8_R1.PropertyManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 
 public class TFM_ServerInterface
 {
-    public static final String COMPILE_NMS_VERSION = "v1_7_R4";
+    public static final String COMPILE_NMS_VERSION = "v1_8_R1";
     public static final Pattern USERNAME_REGEX = Pattern.compile("^[\\w\\d_]{3,20}$");
 
     public static void setOnlineMode(boolean mode)
@@ -109,7 +109,7 @@ public class TFM_ServerInterface
                 }
             }
 
-            int count = server.getOnlinePlayers().length;
+            int count = server.getOnlinePlayers().size();
             if (count >= server.getMaxPlayers())
             {
                 for (Player onlinePlayer : server.getOnlinePlayers())
@@ -136,9 +136,8 @@ public class TFM_ServerInterface
         }
 
         // Player is not an admin
-
         // Server full check
-        if (server.getOnlinePlayers().length >= server.getMaxPlayers())
+        if (server.getOnlinePlayers().size() >= server.getMaxPlayers())
         {
             event.disallow(Result.KICK_FULL, "Sorry, but this server is full.");
             return;

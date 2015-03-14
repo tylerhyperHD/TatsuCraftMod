@@ -6,20 +6,23 @@ import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.HTTPD.NanoHTTPD.HTTPSession;
 import me.StevenLawson.TotalFreedomMod.HTTPD.NanoHTTPD.Response;
-import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
-import net.minecraft.util.org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
 
 public class TFM_HTTPD_Manager
 {
     public static String MIME_DEFAULT_BINARY;
+    //
     private static final Pattern EXT_REGEX;
+    //
     public static final int PORT;
+    //
     private static final TFM_HTTPD HTTPD;
 
     private TFM_HTTPD_Manager()
@@ -48,11 +51,11 @@ public class TFM_HTTPD_Manager
 
             if (HTTPD.isAlive())
             {
-                TFM_Log.info("LFM HTTPd started. Listening on port: " + HTTPD.getListeningPort());
+                TFM_Log.info("TFM HTTPd started. Listening on port: " + HTTPD.getListeningPort());
             }
             else
             {
-                TFM_Log.info("Error starting LFM HTTPd.");
+                TFM_Log.info("Error starting TFM HTTPd.");
             }
         }
         catch (IOException ex)
@@ -70,7 +73,7 @@ public class TFM_HTTPD_Manager
 
         HTTPD.stop();
 
-        TFM_Log.info("LFM HTTPd stopped.");
+        TFM_Log.info("TFM HTTPd stopped.");
     }
 
     private static enum ModuleType
@@ -139,6 +142,7 @@ public class TFM_HTTPD_Manager
                 return new Module_logs(session).getResponse();
             }
         });
+        //
         private final ModuleExecutable moduleExecutable;
 
         private ModuleType(ModuleExecutable moduleExecutable)

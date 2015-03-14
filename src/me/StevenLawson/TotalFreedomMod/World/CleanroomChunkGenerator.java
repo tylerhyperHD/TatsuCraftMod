@@ -1,3 +1,20 @@
+/*
+ * Cleanroom Generator
+ * Copyright (C) 2011-2012 nvx
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package me.StevenLawson.TotalFreedomMod.World;
 
 import static java.lang.System.arraycopy;
@@ -33,14 +50,14 @@ public class CleanroomChunkGenerator extends ChunkGenerator
             {
                 int y = 0;
 
-                layer = new short[128];
+                layer = new short[128]; // Default to 128, will be resized later if required
                 layerDataValues = null;
 
-                if ((id.length() > 0) && (id.charAt(0) == '.'))
+                if ((id.length() > 0) && (id.charAt(0) == '.')) // Is the first character a '.'? If so, skip bedrock generation.
                 {
-                    id = id.substring(1);
+                    id = id.substring(1); // Skip bedrock then and remove the .
                 }
-                else
+                else // Guess not, bedrock at layer0 it is then.
                 {
                     layer[y++] = (short) Material.BEDROCK.getId();
                 }
@@ -69,6 +86,7 @@ public class CleanroomChunkGenerator extends ChunkGenerator
                         {
                             try
                             {
+                                // Lets try to read the data value
                                 dataValue = Byte.parseByte(materialTokens[1]);
                             }
                             catch (Exception e)
@@ -82,10 +100,12 @@ public class CleanroomChunkGenerator extends ChunkGenerator
                         {
                             try
                             {
+                                // Mabe it's an integer?
                                 mat = Material.getMaterial(Integer.parseInt(materialTokens[0]));
                             }
                             catch (Exception e)
                             {
+                                // Well, I guess it wasn't an integer after all... Awkward...
                             }
 
                             if (mat == null)
@@ -127,6 +147,7 @@ public class CleanroomChunkGenerator extends ChunkGenerator
                     }
                 }
 
+                // Trim to size
                 if (layer.length > y)
                 {
                     short[] newLayer = new short[y];
@@ -170,7 +191,7 @@ public class CleanroomChunkGenerator extends ChunkGenerator
             arraycopy(layer, 0, newLayer, 0, maxHeight);
             layer = newLayer;
         }
-        short[][] result = new short[maxHeight / 16][];
+        short[][] result = new short[maxHeight / 16][]; // 16x16x16 chunks
         for (int i = 0; i < layer.length; i += 16)
         {
             result[i >> 4] = new short[4096];
@@ -192,6 +213,7 @@ public class CleanroomChunkGenerator extends ChunkGenerator
         }
         else
         {
+            // This is the default, but just in case default populators change to stock minecraft populators by default...
             return new ArrayList<BlockPopulator>();
         }
     }
@@ -204,9 +226,9 @@ public class CleanroomChunkGenerator extends ChunkGenerator
             world.loadChunk(0, 0);
         }
 
-        if ((world.getHighestBlockYAt(0, 0) <= 0) && (world.getBlockAt(0, 0, 0).getType() == Material.AIR))
+        if ((world.getHighestBlockYAt(0, 0) <= 0) && (world.getBlockAt(0, 0, 0).getType() == Material.AIR)) // SPACE!
         {
-            return new Location(world, 0, 64, 0);
+            return new Location(world, 0, 64, 0); // Lets allow people to drop a little before hitting the void then shall we?
         }
 
         return new Location(world, 0, world.getHighestBlockYAt(0, 0), 0);

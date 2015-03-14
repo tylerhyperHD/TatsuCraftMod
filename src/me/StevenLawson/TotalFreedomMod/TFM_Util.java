@@ -32,8 +32,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_Config;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
-import net.minecraft.util.org.apache.commons.io.FileUtils;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -66,8 +66,8 @@ public class TFM_Util
 {
     private static final Map<String, Integer> ejectTracker = new HashMap<String, Integer>();
     public static final Map<String, EntityType> mobtypes = new HashMap<String, EntityType>();
-    public static final List<String> DEVELOPERS = Arrays.asList("Madgeek1450", "DarthSalamon", "AcidicCyanide", "wild1145", "WickedGamingUK", "xDestroyer217", "Got_No_Friends");
-    );
+    // See https://github.com/TotalFreedom/License - None of the listed names may be removed.
+    public static final List<String> DEVELOPERS = Arrays.asList("Madgeek1450", "Prozza", "DarthSalmon", "AcidicCyanide", "Wild1145", "WickedGamingUK", "SlimehXD", "xDestroyer217");
     private static final Random RANDOM = new Random();
     public static String DATE_STORAGE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
     public static final Map<String, ChatColor> CHAT_COLOR_NAMES = new HashMap<String, ChatColor>();
@@ -130,11 +130,13 @@ public class TFM_Util
         TFM_Util.bcastMsg(message, null);
     }
 
+    // Still in use by listeners
     public static void playerMsg(CommandSender sender, String message, ChatColor color)
     {
         sender.sendMessage(color + message);
     }
 
+    // Still in use by listeners
     public static void playerMsg(CommandSender sender, String message)
     {
         TFM_Util.playerMsg(sender, message, ChatColor.GRAY);
@@ -178,12 +180,36 @@ public class TFM_Util
         return player.getName() + " (" + TFM_UuidManager.getUniqueId(player) + ")";
     }
 
-    public static String toEscapedString(String ip)
+    /**
+     * Escapes an IP-address to a config-friendly version.
+     *
+     * <p>Example:
+     * <pre>
+     * IpUtils.toEscapedString("192.168.1.192"); // 192_168_1_192
+     * </pre></p>
+     *
+     * @param ip The IP-address to escape.
+     * @return The config-friendly IP address.
+     * @see #fromEscapedString(String)
+     */
+    public static String toEscapedString(String ip) // BukkitLib @ https://github.com/Pravian/BukkitLib
     {
         return ip.trim().replaceAll("\\.", "_");
     }
 
-    public static String fromEscapedString(String escapedIp)
+    /**
+     * Un-escapes a config-friendly Ipv4-address.
+     *
+     * <p>Example:
+     * <pre>
+     * IpUtils.fromEscapedString("192_168_1_192"); // 192.168.1.192
+     * </pre></p>
+     *
+     * @param escapedIp The IP-address to un-escape.
+     * @return The config-friendly IP address.
+     * @see #toEscapedString(String)
+     */
+    public static String fromEscapedString(String escapedIp) // BukkitLib @ https://github.com/Pravian/BukkitLib
     {
         return escapedIp.trim().replaceAll("_", "\\.");
     }
@@ -264,6 +290,7 @@ public class TFM_Util
             {
                 for (int zOffset = -length; zOffset <= length; zOffset++)
                 {
+                    // Hollow
                     if (Math.abs(xOffset) != length && Math.abs(yOffset) != length && Math.abs(zOffset) != length)
                     {
                         continue;
@@ -273,6 +300,7 @@ public class TFM_Util
 
                     if (material != Material.SKULL)
                     {
+                        // Glowstone light
                         if (material != Material.GLASS && xOffset == 0 && yOffset == 2 && zOffset == 0)
                         {
                             block.setType(Material.GLOWSTONE);
@@ -281,7 +309,7 @@ public class TFM_Util
 
                         block.setType(material);
                     }
-                    else
+                    else // Darth mode
                     {
                         if (Math.abs(xOffset) == length && Math.abs(yOffset) == length && Math.abs(zOffset) == length)
                         {
@@ -292,7 +320,7 @@ public class TFM_Util
                         block.setType(Material.SKULL);
                         final Skull skull = (Skull) block.getState();
                         skull.setSkullType(SkullType.PLAYER);
-                        skull.setOwner("ImALuckyGuy");
+                        skull.setOwner("DarthSalamon");
                         skull.update();
                     }
                 }
@@ -369,7 +397,14 @@ public class TFM_Util
         return TFM_Util.mobtypes.get(mobname);
     }
 
-    public static void copy(InputStream in, File file) throws IOException
+    /**
+     * Write the specified InputStream to a file.
+     *
+     * @param in The InputStream from which to read.
+     * @param file The File to write to.
+     * @throws IOException
+     */
+    public static void copy(InputStream in, File file) throws IOException // BukkitLib @ https://github.com/Pravian/BukkitLib
     {
         if (!file.exists())
         {
@@ -387,7 +422,14 @@ public class TFM_Util
         in.close();
     }
 
-    public static File getPluginFile(Plugin plugin, String name)
+    /**
+     * Returns a file at located at the Plugins Data folder.
+     *
+     * @param plugin The plugin to use
+     * @param name The name of the file.
+     * @return The requested file.
+     */
+    public static File getPluginFile(Plugin plugin, String name)  // BukkitLib @ https://github.com/Pravian/BukkitLib
     {
         return new File(plugin.getDataFolder(), name);
     }
@@ -671,6 +713,7 @@ public class TFM_Util
         final TFM_Config config = new TFM_Config(TotalFreedomMod.plugin, "backup/backup.yml", false);
         config.load();
 
+        // Weekly
         if (!config.isInt(save + ".weekly"))
         {
             performBackup(file, "weekly");
@@ -693,6 +736,7 @@ public class TFM_Util
             return;
         }
 
+        // Daily
         if (!config.isInt(save + ".daily"))
         {
             performBackup(file, "daily");
@@ -873,6 +917,7 @@ public class TFM_Util
         }
     }
 
+    //getField: Borrowed from WorldEdit
     @SuppressWarnings("unchecked")
     public static <T> T getField(Object from, String name)
     {
@@ -934,6 +979,17 @@ public class TFM_Util
         String packageName = Bukkit.getServer().getClass().getPackage().getName();
         return packageName.substring(packageName.lastIndexOf('.') + 1);
 
+    }
+
+    public static void reportAction(Player reporter, Player reported, String report)
+    {
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            if (TFM_AdminList.isSuperAdmin(player))
+            {
+                playerMsg(player, ChatColor.RED + "[REPORTS] " + ChatColor.GOLD + reporter.getName() + " has reported " + reported.getName() + " for " + report);
+            }
+        }
     }
 
     public static class TFM_EntityWiper

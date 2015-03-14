@@ -7,9 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerLoginEvent;
 
 public class TFM_Ban
 {
@@ -19,12 +16,15 @@ public class TFM_Ban
 
     static
     {
+        // 192.168.1.254:LocalHost:DarthSalamon:0:none
+        // 127.0.*.*:TestUserName:BannedByNotch:123567:Test reason
         IP_BAN_REGEX = Pattern.compile(
                 "^((?:(?:\\*|(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\\.){3}(?:\\*|(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)))"
                 + ":([\\w\\s]+)"
                 + ":([\\w]+)"
                 + ":(\\d+)"
                 + ":([\\s\\S]+)$");
+        // 245d2f30-61fb-4840-9cd3-298b3920f4a4:Cobrex:DarthSalamon:0:Example reason
         UUID_BAN_REGEX = Pattern.compile(
                 "^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})"
                 + ":([\\w\\s]+)"
@@ -34,7 +34,7 @@ public class TFM_Ban
     }
     private final BanType type;
     private final boolean complete;
-    private String subject;
+    private String subject; // uuid or IP
     private String lastLoginName;
     private String by;
     private long expireUnix;
@@ -157,6 +157,7 @@ public class TFM_Ban
         return message.toString();
     }
 
+    // subject:lastLoginName:bannedBy:expireUnix:reason
     @Override
     public String toString()
     {

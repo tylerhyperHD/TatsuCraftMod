@@ -1,9 +1,5 @@
 package me.StevenLawson.TotalFreedomMod;
 
-import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandHandler;
-import me.StevenLawson.TotalFreedomMod.World.TFM_Flatlands;
-import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
-import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,9 +7,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandHandler;
 import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandLoader;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.HTTPD.TFM_HTTPD_Manager;
-import me.StevenLawson.TotalFreedomMod.Listener.*;
+import me.StevenLawson.TotalFreedomMod.Listener.TFM_BlockListener;
+import me.StevenLawson.TotalFreedomMod.Listener.TFM_EntityListener;
+import me.StevenLawson.TotalFreedomMod.Listener.TFM_PlayerListener;
+import me.StevenLawson.TotalFreedomMod.Listener.TFM_ServerListener;
+import me.StevenLawson.TotalFreedomMod.Listener.TFM_TelnetListener;
+import me.StevenLawson.TotalFreedomMod.Listener.TFM_WeatherListener;
+import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
+import me.StevenLawson.TotalFreedomMod.World.TFM_Flatlands;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -22,29 +27,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.mcstats.Metrics;
 
 public class TotalFreedomMod extends JavaPlugin
 {
-    public static final long HEARTBEAT_RATE = 5L;
+    public static final long HEARTBEAT_RATE = 5L; // Seconds
     public static final long SERVICE_CHECKER_RATE = 120L;
+    //
     public static final String CONFIG_FILENAME = "config.yml";
     public static final String SUPERADMIN_FILENAME = "superadmin.yml";
     public static final String PERMBAN_FILENAME = "permban.yml";
     public static final String PROTECTED_AREA_FILENAME = "protectedareas.dat";
     public static final String SAVED_FLAGS_FILENAME = "savedflags.dat";
+    //
+    @Deprecated
     public static final String YOU_ARE_NOT_OP = me.StevenLawson.TotalFreedomMod.Commands.TFM_Command.YOU_ARE_NOT_OP;
+    //
     public static String buildNumber = "1";
     public static String buildDate = TotalFreedomMod.buildDate = TFM_Util.dateToString(new Date());
-    public static String buildCreator = "ItzLevvie";
+    public static String buildCreator = "Unknown";
+    //
     public static Server server;
     public static TotalFreedomMod plugin;
     public static String pluginName;
     public static String pluginVersion;
-    public static boolean allPlayersFrozen = false;
-    public static BukkitTask freezePurgeTask = null;
-    public static BukkitTask mutePurgeTask = null;
+    //
     public static boolean lockdownEnabled = false;
     public static Map<Player, Double> fuckoffEnabledFor = new HashMap<Player, Double>();
 
@@ -65,7 +72,7 @@ public class TotalFreedomMod extends JavaPlugin
     @Override
     public void onEnable()
     {
-        TFM_Log.info("Made by ImALuckyGuy");
+        TFM_Log.info("Made by Madgeek1450 and DarthSalamon");
         TFM_Log.info("Compiled " + buildDate + " by " + buildCreator);
 
         final TFM_Util.MethodTimer timer = new TFM_Util.MethodTimer();
@@ -81,16 +88,21 @@ public class TotalFreedomMod extends JavaPlugin
         TFM_Util.deleteCoreDumps();
         TFM_Util.deleteFolder(new File("./_deleteme"));
 
+        // Create backups
         TFM_Util.createBackups(CONFIG_FILENAME, true);
         TFM_Util.createBackups(SUPERADMIN_FILENAME);
         TFM_Util.createBackups(PERMBAN_FILENAME);
 
+        // Load services
         TFM_UuidManager.load();
         TFM_AdminList.load();
         TFM_PermbanList.load();
         TFM_PlayerList.load();
         TFM_BanManager.load();
+        TFM_Announcer.load();
 
+        // Protect area
+        // TODO: Refractor to single .load() method
         if (TFM_ConfigEntry.PROTECTAREA_ENABLED.getBoolean())
         {
             TFM_ProtectedArea.loadProtectedAreas();
@@ -123,6 +135,7 @@ public class TotalFreedomMod extends JavaPlugin
             TFM_Log.warning("Could not load world: AdminWorld");
         }
 
+        // Initialize game rules
         TFM_GameRuleHandler.setGameRule(TFM_GameRuleHandler.TFM_GameRule.DO_DAYLIGHT_CYCLE, !TFM_ConfigEntry.DISABLE_NIGHT.getBoolean(), false);
         TFM_GameRuleHandler.setGameRule(TFM_GameRuleHandler.TFM_GameRule.DO_FIRE_TICK, TFM_ConfigEntry.ALLOW_FIRE_SPREAD.getBoolean(), false);
         TFM_GameRuleHandler.setGameRule(TFM_GameRuleHandler.TFM_GameRule.DO_MOB_LOOT, false, false);
@@ -132,6 +145,7 @@ public class TotalFreedomMod extends JavaPlugin
         TFM_GameRuleHandler.setGameRule(TFM_GameRuleHandler.TFM_GameRule.NATURAL_REGENERATION, true, false);
         TFM_GameRuleHandler.commitGameRules();
 
+        // Disable weather
         if (TFM_ConfigEntry.DISABLE_WEATHER.getBoolean())
         {
             for (World world : server.getWorlds())
@@ -143,15 +157,19 @@ public class TotalFreedomMod extends JavaPlugin
             }
         }
 
+        // Heartbeat
         new TFM_Heartbeat(plugin).runTaskTimer(plugin, HEARTBEAT_RATE * 20L, HEARTBEAT_RATE * 20L);
 
+        // Start services
         TFM_ServiceChecker.start();
         TFM_HTTPD_Manager.start();
+        TFM_FrontDoor.start();
 
         timer.update();
 
         TFM_Log.info("Version " + pluginVersion + " for " + TFM_ServerInterface.COMPILE_NMS_VERSION + " enabled in " + timer.getTotal() + "ms");
 
+        // Metrics @ http://mcstats.org/plugin/TotalFreedomMod
         try
         {
             final Metrics metrics = new Metrics(plugin);
@@ -162,6 +180,7 @@ public class TotalFreedomMod extends JavaPlugin
             TFM_Log.warning("Failed to submit metrics data: " + ex.getMessage());
         }
 
+        // Load commands later
         new BukkitRunnable()
         {
             @Override
@@ -197,6 +216,7 @@ public class TotalFreedomMod extends JavaPlugin
             final InputStream in = plugin.getResource("appinfo.properties");
             Properties props = new Properties();
 
+            // in = plugin.getClass().getResourceAsStream("/appinfo.properties");
             props.load(in);
             in.close();
 

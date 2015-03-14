@@ -26,7 +26,7 @@ public class TFM_ServerListener implements Listener
 
         if (TFM_ConfigEntry.ADMIN_ONLY_MODE.getBoolean())
         {
-            event.setMotd(ChatColor.RED + "Server is locked down.");
+            event.setMotd(ChatColor.RED + "Server is closed.");
             return;
         }
 
@@ -36,7 +36,7 @@ public class TFM_ServerListener implements Listener
             return;
         }
 
-        if (Bukkit.getOnlinePlayers().length >= Bukkit.getMaxPlayers())
+        if (Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers())
         {
             event.setMotd(ChatColor.RED + "Server is full.");
             return;
@@ -48,6 +48,7 @@ public class TFM_ServerListener implements Listener
                     .replace("%mcversion%", TFM_ServerInterface.getVersion())));
             return;
         }
+        // Colorful MOTD
 
         final StringBuilder motd = new StringBuilder();
 

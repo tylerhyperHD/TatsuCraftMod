@@ -1,7 +1,5 @@
 package me.StevenLawson.TotalFreedomMod.World;
 
-import me.StevenLawson.TotalFreedomMod.World.TFM_CustomWorld;
-import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,12 +7,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_GameRuleHandler;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
-import org.bukkit.*;
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
@@ -24,14 +28,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public final class TFM_AdminWorld extends TFM_CustomWorld
 {
-    private static final long CACHE_CLEAR_FREQUENCY = 30L * 1000L;
-    private static final long TP_COOLDOWN_TIME = 500L;
+    private static final long CACHE_CLEAR_FREQUENCY = 30L * 1000L; //30 seconds, milliseconds
+    private static final long TP_COOLDOWN_TIME = 500L; //0.5 seconds, milliseconds
     private static final String GENERATION_PARAMETERS = TFM_ConfigEntry.FLATLANDS_GENERATE_PARAMS.getString();
     private static final String WORLD_NAME = "adminworld";
+    //
     private final Map<Player, Long> teleportCooldown = new HashMap<Player, Long>();
     private final Map<CommandSender, Boolean> accessCache = new HashMap<CommandSender, Boolean>();
+    //
     private Long cacheLastCleared = null;
-    private Map<Player, Player> guestList = new HashMap<Player, Player>();
+    private Map<Player, Player> guestList = new HashMap<Player, Player>(); // Guest, Supervisor
     private WeatherMode weatherMode = WeatherMode.OFF;
     private TimeOfDay timeOfDay = TimeOfDay.INHERIT;
 
@@ -223,6 +229,7 @@ public final class TFM_AdminWorld extends TFM_CustomWorld
         OFF("off"),
         RAIN("rain"),
         STORM("storm,thunderstorm");
+        //
         private final List<String> aliases;
 
         private WeatherMode(String aliases)

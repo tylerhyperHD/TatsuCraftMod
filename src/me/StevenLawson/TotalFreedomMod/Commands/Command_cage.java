@@ -74,7 +74,7 @@ public class Command_cage extends TFM_Command
             }
             else
             {
-                if ("levvie".equalsIgnoreCase(args[1]))
+                if ("darth".equalsIgnoreCase(args[1]))
                 {
                     outerMaterial = Material.SKULL;
                 }
@@ -113,7 +113,7 @@ public class Command_cage extends TFM_Command
         }
         else
         {
-            TFM_Util.adminAction(sender.getName(), "Caging " + player.getName() + " in PURE_LEVVIE", true);
+            TFM_Util.adminAction(sender.getName(), "Caging " + player.getName() + " in PURE_DARTH", true);
         }
 
         return true;

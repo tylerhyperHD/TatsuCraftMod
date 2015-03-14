@@ -97,7 +97,7 @@ public class TFM_EssentialsBridge
             final User user = getEssentialsUser(username);
             if (user != null)
             {
-                return TFM_Util.<Long>getField(user, "lastActivity");
+                return TFM_Util.<Long>getField(user, "lastActivity"); // This is weird
             }
         }
         catch (Exception ex)

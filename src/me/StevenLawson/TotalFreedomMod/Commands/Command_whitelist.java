@@ -1,7 +1,8 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
-import me.StevenLawson.TotalFreedomMod.TFM_ServerInterface;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
+import me.StevenLawson.TotalFreedomMod.TFM_DepreciationAggregator;
+import me.StevenLawson.TotalFreedomMod.TFM_ServerInterface;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -20,12 +21,14 @@ public class Command_whitelist extends TFM_Command
             return false;
         }
 
+        // list
         if (args[0].equalsIgnoreCase("list"))
         {
             playerMsg("Whitelisted players: " + TFM_Util.playerListToNames(server.getWhitelistedPlayers()));
             return true;
         }
 
+        // count
         if (args[0].equalsIgnoreCase("count"))
         {
             int onlineWPs = 0;
@@ -52,12 +55,14 @@ public class Command_whitelist extends TFM_Command
             return true;
         }
 
+        // all commands past this line are superadmin-only
         if (!(senderIsConsole || TFM_AdminList.isSuperAdmin(sender)))
         {
             sender.sendMessage(TFM_Command.MSG_NO_PERMS);
             return true;
         }
 
+        // on
         if (args[0].equalsIgnoreCase("on"))
         {
             TFM_Util.adminAction(sender.getName(), "Turning the whitelist on.", true);
@@ -65,6 +70,7 @@ public class Command_whitelist extends TFM_Command
             return true;
         }
 
+        // off
         if (args[0].equalsIgnoreCase("off"))
         {
             TFM_Util.adminAction(sender.getName(), "Turning the whitelist off.", true);
@@ -72,6 +78,7 @@ public class Command_whitelist extends TFM_Command
             return true;
         }
 
+        // add
         if (args[0].equalsIgnoreCase("add"))
         {
             if (args.length < 2)
@@ -85,7 +92,7 @@ public class Command_whitelist extends TFM_Command
 
             if (player == null)
             {
-                player = me.StevenLawson.TotalFreedomMod.TFM_DepreciationAggregator.getOfflinePlayer(server, search_name);
+                player = TFM_DepreciationAggregator.getOfflinePlayer(server, search_name);
             }
 
             TFM_Util.adminAction(sender.getName(), "Adding " + player.getName() + " to the whitelist.", false);
@@ -93,6 +100,7 @@ public class Command_whitelist extends TFM_Command
             return true;
         }
 
+        // remove
         if ("remove".equals(args[0]))
         {
             if (args.length < 2)
@@ -106,7 +114,7 @@ public class Command_whitelist extends TFM_Command
 
             if (player == null)
             {
-                player = me.StevenLawson.TotalFreedomMod.TFM_DepreciationAggregator.getOfflinePlayer(server, search_name);
+                player = TFM_DepreciationAggregator.getOfflinePlayer(server, search_name);
             }
 
             if (player.isWhitelisted())
@@ -123,6 +131,7 @@ public class Command_whitelist extends TFM_Command
 
         }
 
+        // addall
         if (args[0].equalsIgnoreCase("addall"))
         {
             TFM_Util.adminAction(sender.getName(), "Adding all online players to the whitelist.", false);
@@ -140,12 +149,14 @@ public class Command_whitelist extends TFM_Command
             return true;
         }
 
+        // all commands past this line are console/telnet only
         if (!senderIsConsole)
         {
             sender.sendMessage(TFM_Command.MSG_NO_PERMS);
             return true;
         }
 
+        //purge
         if (args[0].equalsIgnoreCase("purge"))
         {
             TFM_Util.adminAction(sender.getName(), "Removing all players from the whitelist.", false);
@@ -154,6 +165,7 @@ public class Command_whitelist extends TFM_Command
             return true;
         }
 
+        // none of the commands were executed
         return false;
     }
 }

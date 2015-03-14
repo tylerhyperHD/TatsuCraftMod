@@ -62,7 +62,7 @@ public class TFM_CommandLoader
             commandMap.register(TotalFreedomMod.plugin.getDescription().getName(), dynamicCommand);
         }
 
-        TFM_Log.info("LFM commands loaded.");
+        TFM_Log.info("TFM commands loaded.");
     }
 
     public static void unregisterCommand(String commandName)

@@ -10,5 +10,5 @@ public @interface CommandParameters
 
     String usage();
 
-    String aliases() default "";
+    String aliases() default ""; // "alias1,alias2,alias3" - no spaces
 }

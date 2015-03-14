@@ -1,7 +1,7 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
 import me.StevenLawson.TotalFreedomMod.TFM_CommandBlocker;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -44,6 +44,7 @@ public class Command_wildcard extends TFM_Command
 
         if (TFM_CommandBlocker.isCommandBlocked(baseCommand, sender))
         {
+            // CommandBlocker handles messages and broadcasts
             return true;
         }
 

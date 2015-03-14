@@ -1,12 +1,12 @@
 package me.StevenLawson.TotalFreedomMod;
 
-import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.StevenLawson.TotalFreedomMod.Commands.TFM_CommandLoader;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -41,8 +41,8 @@ public class TFM_CommandBlocker
         }
 
         @SuppressWarnings("unchecked")
-        List<String> _blockedCommands = (List<String>) TFM_ConfigEntry.BLOCKED_COMMANDS.getList();
-        for (String rawEntry : _blockedCommands)
+        List<String> blockedCommands = (List<String>) TFM_ConfigEntry.BLOCKED_COMMANDS.getList();
+        for (String rawEntry : blockedCommands)
         {
             final String[] parts = rawEntry.split(":");
             if (parts.length < 3 || parts.length > 4)
@@ -96,16 +96,19 @@ public class TFM_CommandBlocker
             final Command bukkitCommand = commandMap.getCommand(command);
             if (bukkitCommand == null)
             {
+                //TFM_Log.info("Blocking unknown command: " + blockedCommandEntry.getCommand());
                 BLOCKED_COMMANDS.put(blockedCommandEntry.getCommand(), blockedCommandEntry);
             }
             else
             {
                 blockedCommandEntry.setCommand(bukkitCommand.getName().toLowerCase());
 
+                //TFM_Log.info("Blocking command: " + blockedCommandEntry.getCommand());
                 BLOCKED_COMMANDS.put(blockedCommandEntry.getCommand(), blockedCommandEntry);
 
                 for (String alias : bukkitCommand.getAliases())
                 {
+                    //TFM_Log.info("Blocking alias: " + alias.toLowerCase() + " of " + blockedCommandEntry.getCommand());
                     BLOCKED_COMMANDS.put(alias.toLowerCase(), blockedCommandEntry);
                 }
             }
@@ -318,7 +321,7 @@ public class TFM_CommandBlocker
 
                 if (this.action == CommandBlockerAction.BLOCK_UNKNOWN)
                 {
-                    response = "Unknown command. Type \"/help\" for help.";
+                    response = "Unknown command. Type \"help\" for help.";
                 }
                 else if (this.message == null || "_".equals(this.message))
                 {

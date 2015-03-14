@@ -2,7 +2,7 @@ package me.StevenLawson.TotalFreedomMod.Commands;
 
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class TFM_CommandHandler
 {
-    public static final String COMMAND_PATH = TFM_Command.class.getPackage().getName();
+    public static final String COMMAND_PATH = TFM_Command.class.getPackage().getName(); // "me.StevenLawson.TotalFreedomMod.Commands";
     public static final String COMMAND_PREFIX = "Command_";
 
     public static boolean handleCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)

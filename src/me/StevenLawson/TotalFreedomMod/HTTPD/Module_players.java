@@ -27,11 +27,13 @@ public class Module_players extends TFM_HTTPD_Module
         final JSONArray senioradmins = new JSONArray();
         final JSONArray developers = new JSONArray();
 
+        // All online players
         for (Player player : TotalFreedomMod.server.getOnlinePlayers())
         {
             players.add(player.getName());
         }
 
+        // Super admins (non-telnet and non-senior)
         for (UUID superadmin : TFM_AdminList.getSuperUUIDs())
         {
             if (TFM_AdminList.getSeniorUUIDs().contains(superadmin))
@@ -47,6 +49,7 @@ public class Module_players extends TFM_HTTPD_Module
             superadmins.add(getName(superadmin));
         }
 
+        // Telnet admins (non-senior)
         for (UUID telnetadmin : TFM_AdminList.getTelnetUUIDs())
         {
             if (TFM_AdminList.getSeniorUUIDs().contains(telnetadmin))
@@ -56,11 +59,13 @@ public class Module_players extends TFM_HTTPD_Module
             telnetadmins.add(getName(telnetadmin));
         }
 
+        // Senior admins
         for (UUID senioradmin : TFM_AdminList.getSeniorUUIDs())
         {
             senioradmins.add(getName(senioradmin));
         }
 
+        // Developers
         developers.addAll(TFM_Util.DEVELOPERS);
 
         responseObject.put("players", players);

@@ -1,6 +1,7 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
+import me.StevenLawson.TotalFreedomMod.TFM_DepreciationAggregator;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -40,7 +41,7 @@ public class Command_op extends TFM_Command
         {
             if (TFM_AdminList.isSuperAdmin(sender) || senderIsConsole)
             {
-                player = me.StevenLawson.TotalFreedomMod.TFM_DepreciationAggregator.getOfflinePlayer(server, args[0]);
+                player = TFM_DepreciationAggregator.getOfflinePlayer(server, args[0]);
             }
             else
             {
@@ -50,7 +51,7 @@ public class Command_op extends TFM_Command
             }
         }
 
-        TFM_Util.adminAction(sender.getName(), "Opping " + player.getName(), false);
+        TFM_Util.bcastMsg(String.format("(%s: Opping %s)", sender.getName(), player.getName()), ChatColor.GRAY);
         player.setOp(true);
 
         return true;

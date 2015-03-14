@@ -1,13 +1,13 @@
 package me.StevenLawson.TotalFreedomMod;
 
+import com.google.common.collect.Sets;
 import java.io.File;
 import java.util.Collections;
-import me.StevenLawson.TotalFreedomMod.Config.TFM_Config;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import net.minecraft.util.com.google.common.collect.Sets;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -29,6 +29,7 @@ public class TFM_PlayerList
     {
         PLAYER_LIST.clear();
 
+        // Load online players
         for (Player player : Bukkit.getOnlinePlayers())
         {
             getEntry(player);
@@ -45,6 +46,7 @@ public class TFM_PlayerList
         }
     }
 
+    // May return null
     public static TFM_Player getEntry(UUID uuid)
     {
         if (PLAYER_LIST.containsKey(uuid))
@@ -161,6 +163,7 @@ public class TFM_PlayerList
             file.delete();
         }
 
+        // Load online players
         load();
     }
 

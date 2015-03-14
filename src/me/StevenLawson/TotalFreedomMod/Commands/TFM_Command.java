@@ -1,8 +1,9 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
+import java.util.Collection;
+import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
-import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
 import org.bukkit.ChatColor;
@@ -150,8 +151,9 @@ public abstract class TFM_Command
             return null;
         }
 
-        final Player[] players = server.getOnlinePlayers();
+        final Collection<? extends Player> players = server.getOnlinePlayers();
 
+        // Check exact matches first.
         for (final Player player : players)
         {
             if (partialName.equalsIgnoreCase(player.getName()))
@@ -165,6 +167,7 @@ public abstract class TFM_Command
             return null;
         }
 
+        // Then check partial matches in name.
         for (final Player player : players)
         {
             if (player.getName().toLowerCase().contains(partialName.toLowerCase()))
@@ -173,6 +176,7 @@ public abstract class TFM_Command
             }
         }
 
+        // Then check partial matches in display name.
         for (final Player player : players)
         {
             if (player.getDisplayName().toLowerCase().contains(partialName.toLowerCase()))

@@ -1,5 +1,6 @@
 package me.StevenLawson.TotalFreedomMod;
 
+import com.google.common.collect.Sets;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,7 +16,6 @@ import me.StevenLawson.TotalFreedomMod.Config.TFM_Config;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_MainConfig;
 import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
-import net.minecraft.util.com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -433,12 +433,12 @@ public class TFM_AdminList
 
         final Player player = (Player) sender;
 
-        if (Bukkit.getOnlineMode() && superUUIDs.contains(TFM_UuidManager.getUniqueId(player)))
+        if (superIps.contains(TFM_Util.getIp(player)))
         {
             return true;
         }
 
-        if (superIps.contains(TFM_Util.getIp(player)))
+        if (Bukkit.getOnlineMode() && superUUIDs.contains(TFM_UuidManager.getUniqueId(player)))
         {
             return true;
         }
@@ -556,6 +556,7 @@ public class TFM_AdminList
     {
         final UUID uuid = TFM_UuidManager.getUniqueId(player);
         final String ip = TFM_Util.getIp(player);
+        final boolean canSuperIp = !TFM_MainConfig.getList(TFM_ConfigEntry.NOADMIN_IPS).contains(ip);
 
         if (adminList.containsKey(uuid))
         {
@@ -566,7 +567,7 @@ public class TFM_AdminList
             {
                 superadmin.setLastLogin(new Date());
 
-                if (ip != null)
+                if (ip != null && canSuperIp)
                 {
                     superadmin.addIp(ip);
                 }
@@ -579,11 +580,17 @@ public class TFM_AdminList
 
         if (ip == null)
         {
-            TFM_Log.severe("Cannot add superadmin: " + TFM_Util.formatPlayer(player));
+            TFM_Log.severe("Could not add superadmin: " + TFM_Util.formatPlayer(player));
             TFM_Log.severe("Could not retrieve IP!");
             return;
         }
 
+        if (!canSuperIp)
+        {
+            TFM_Log.warning("Could not add superadmin: " + TFM_Util.formatPlayer(player));
+            TFM_Log.warning("IP " + ip + " may not be supered.");
+            return;
+        }
 
         final TFM_Admin superadmin = new TFM_Admin(
                 uuid,
@@ -640,7 +647,7 @@ public class TFM_AdminList
             {
                 if (verbose)
                 {
-                    TFM_Util.adminAction("TatsuCraftMod", "Deactivating superadmin " + superadmin.getLastLoginName() + ", inactive for " + lastLoginHours + " hours.", true);
+                    TFM_Util.adminAction("TotalFreedomMod", "Deactivating superadmin " + superadmin.getLastLoginName() + ", inactive for " + lastLoginHours + " hours.", true);
                 }
 
                 superadmin.setActivated(false);

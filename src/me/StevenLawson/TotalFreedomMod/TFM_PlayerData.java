@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import me.StevenLawson.TotalFreedomMod.Bridge.TFM_EssentialsBridge;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -22,58 +23,19 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class TFM_PlayerData
 {
-    public final static Map<Player, TFM_PlayerData> userinfo = new HashMap<Player, TFM_PlayerData>();
-    private final Player player;
-    private final String ip;
-    private final UUID uuid;
-    private boolean isFrozen = false;
-    private boolean isMuted = false;
-    private boolean isHalted = false;
-    private int messageCount = 0;
-    private int totalBlockDestroy = 0;
-    private int totalBlockPlace = 0;
-    private int freecamDestroyCount = 0;
-    private int freecamPlaceCount = 0;
-    private boolean isCaged = false;
-    private Location cagePosition;
-    private List<TFM_BlockData> cageHistory = new ArrayList<TFM_BlockData>();
-    private Material cageOuterMaterial = Material.GLASS;
-    private Material cageInnerMatterial = Material.AIR;
-    private boolean isOrbiting = false;
-    private double orbitStrength = 10.0;
-    private boolean mobThrowerEnabled = false;
-    private EntityType mobThrowerEntity = EntityType.PIG;
-    private double mobThrowerSpeed = 4.0;
-    private List<LivingEntity> mobThrowerQueue = new ArrayList<LivingEntity>();
-    private BukkitTask mp44ScheduleId = null;
-    private boolean mp44Armed = false;
-    private boolean mp44Firing = false;
-    private BukkitTask lockupScheduleId = null;
-    private String lastMessage = "";
-    private boolean inAdminchat = false;
-    private boolean allCommandsBlocked = false;
-    private boolean verifiedSuperadminId = false;
-    private String lastCommand = "";
-    private boolean cmdspyEnabled = false;
-    private String tag = null;
-
-    private TFM_PlayerData(Player player)
-    {
-        this.player = player;
-        this.uuid = TFM_UuidManager.getUniqueId(player.getName());
-        this.ip = player.getAddress().getAddress().getHostAddress();
-    }
+    public static final Map<Player, TFM_PlayerData> USER_INFO = new HashMap<Player, TFM_PlayerData>();
+    public static final long AUTO_PURGE = 20L * 60L * 5L;
 
     public static TFM_PlayerData getPlayerData(Player player)
     {
-        TFM_PlayerData playerdata = TFM_PlayerData.userinfo.get(player);
+        TFM_PlayerData playerdata = TFM_PlayerData.USER_INFO.get(player);
 
         if (playerdata != null)
         {
             return playerdata;
         }
 
-        Iterator<Entry<Player, TFM_PlayerData>> it = userinfo.entrySet().iterator();
+        Iterator<Entry<Player, TFM_PlayerData>> it = USER_INFO.entrySet().iterator();
         while (it.hasNext())
         {
             Entry<Player, TFM_PlayerData> pair = it.next();
@@ -103,9 +65,53 @@ public class TFM_PlayerData
         }
 
         playerdata = new TFM_PlayerData(player);
-        TFM_PlayerData.userinfo.put(player, playerdata);
+        TFM_PlayerData.USER_INFO.put(player, playerdata);
 
         return playerdata;
+    }
+    //
+    private final Player player;
+    private final String ip;
+    private final UUID uuid;
+    //
+    private BukkitTask unmuteTask;
+    private BukkitTask unfreezeTask;
+    private BukkitTask mp44ScheduleTask = null;
+    private BukkitTask lockupScheduleTask = null;
+    private boolean isHalted = false;
+    private boolean isCaged = false;
+    private boolean inAdminchat = false;
+    private boolean allCommandsBlocked = false;
+    private boolean verifiedSuperadminId = false;
+    private boolean cmdspyEnabled = false;
+    private boolean mp44Armed = false;
+    private boolean mp44Firing = false;
+    private boolean isOrbiting = false;
+    private boolean mobThrowerEnabled = false;
+    private int messageCount = 0;
+    private int totalBlockDestroy = 0;
+    private int totalBlockPlace = 0;
+    private int freecamDestroyCount = 0;
+    private int freecamPlaceCount = 0;
+    private int warningCount = 0;
+    private double orbitStrength = 10.0;
+    private double mobThrowerSpeed = 4.0;
+    private Location cagePosition;
+    private Location freezeLocation;
+    private final List<TFM_BlockData> cageHistory = new ArrayList<TFM_BlockData>();
+    private final List<LivingEntity> mobThrowerQueue = new ArrayList<LivingEntity>();
+    private Material cageOuterMaterial = Material.GLASS;
+    private Material cageInnerMatterial = Material.AIR;
+    private String lastMessage = "";
+    private String lastCommand = "";
+    private String tag = null;
+    private EntityType mobThrowerEntity = EntityType.PIG;
+
+    private TFM_PlayerData(Player player)
+    {
+        this.player = player;
+        this.uuid = TFM_UuidManager.getUniqueId(player.getName());
+        this.ip = player.getAddress().getAddress().getHostAddress();
     }
 
     public String getIpAddress()
@@ -157,11 +163,6 @@ public class TFM_PlayerData
         return this.isCaged;
     }
 
-    public enum CageLayer
-    {
-        INNER, OUTER
-    }
-
     public Material getCageMaterial(CageLayer layer)
     {
         switch (layer)
@@ -198,26 +199,45 @@ public class TFM_PlayerData
         }
     }
 
-    private class TFM_BlockData
+    public Location getFreezeLocation()
     {
-        public Material material;
-        public Location location;
-
-        private TFM_BlockData(Location location, Material material)
-        {
-            this.location = location;
-            this.material = material;
-        }
+        return freezeLocation;
     }
 
     public boolean isFrozen()
     {
-        return this.isFrozen;
+        return unfreezeTask != null;
     }
 
-    public void setFrozen(boolean fr)
+    public void setFrozen(boolean freeze)
     {
-        this.isFrozen = fr;
+        cancel(unfreezeTask);
+        unfreezeTask = null;
+        freezeLocation = null;
+
+        if (player.getGameMode() != GameMode.CREATIVE)
+        {
+            player.setFlying(false);
+        }
+
+        if (!freeze)
+        {
+            return;
+        }
+
+        freezeLocation = player.getLocation(); // Blockify location
+        player.setFlying(true); // Avoid infinite falling
+
+        unfreezeTask = new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                TFM_Util.adminAction("TotalFreedom", "Unfreezing " + player.getName(), false);
+                setFrozen(false);
+            }
+
+        }.runTaskLater(TotalFreedomMod.plugin, AUTO_PURGE);
     }
 
     public void resetMsgCount()
@@ -313,35 +333,18 @@ public class TFM_PlayerData
     public void startArrowShooter(TotalFreedomMod plugin)
     {
         this.stopArrowShooter();
-        this.mp44ScheduleId = new ArrowShooter(this.player).runTaskTimer(plugin, 1L, 1L);
+        this.mp44ScheduleTask = new ArrowShooter(this.player).runTaskTimer(plugin, 1L, 1L);
         this.mp44Firing = true;
     }
 
     public void stopArrowShooter()
     {
-        if (this.mp44ScheduleId != null)
+        if (this.mp44ScheduleTask != null)
         {
-            this.mp44ScheduleId.cancel();
-            this.mp44ScheduleId = null;
+            this.mp44ScheduleTask.cancel();
+            this.mp44ScheduleTask = null;
         }
         this.mp44Firing = false;
-    }
-
-    private class ArrowShooter extends BukkitRunnable
-    {
-        private Player player;
-
-        private ArrowShooter(Player player)
-        {
-            this.player = player;
-        }
-
-        @Override
-        public void run()
-        {
-            Arrow shot = player.launchProjectile(Arrow.class);
-            shot.setVelocity(shot.getVelocity().multiply(2.0));
-        }
     }
 
     public void armMP44()
@@ -369,12 +372,30 @@ public class TFM_PlayerData
 
     public boolean isMuted()
     {
-        return isMuted;
+        return unmuteTask != null;
     }
 
     public void setMuted(boolean muted)
     {
-        this.isMuted = muted;
+        cancel(unmuteTask);
+        unmuteTask = null;
+
+        if (!muted)
+        {
+            return;
+        }
+
+        unmuteTask = new BukkitRunnable()
+        {
+
+            @Override
+            public void run()
+            {
+                TFM_Util.adminAction("TotalFreedom", "Unmuting " + player.getName(), false);
+                setMuted(false);
+            }
+
+        }.runTaskLater(TotalFreedomMod.plugin, AUTO_PURGE);
     }
 
     public boolean isHalted()
@@ -415,12 +436,12 @@ public class TFM_PlayerData
 
     public BukkitTask getLockupScheduleID()
     {
-        return this.lockupScheduleId;
+        return this.lockupScheduleTask;
     }
 
     public void setLockupScheduleID(BukkitTask id)
     {
-        this.lockupScheduleId = id;
+        this.lockupScheduleTask = id;
     }
 
     public void setLastMessage(String message)
@@ -453,11 +474,15 @@ public class TFM_PlayerData
         this.allCommandsBlocked = commandsBlocked;
     }
 
+    // If someone logs in to telnet or minecraft, and they are an admin, make sure that they are using a username that is associated with their IP.
+    // After the check for this is done in TFM_PlayerListener, never change it elsewhere.
     public boolean isSuperadminIdVerified()
     {
         return this.verifiedSuperadminId;
     }
 
+    // If someone logs in to telnet or minecraft, and they are an admin, make sure that they are using a username that is associated with their IP.
+    // After the check for this is done in TFM_PlayerListener, never change it elsewhere.
     public void setSuperadminIdVerified(boolean verifiedSuperadminId)
     {
         this.verifiedSuperadminId = verifiedSuperadminId;
@@ -498,5 +523,71 @@ public class TFM_PlayerData
     public String getTag()
     {
         return this.tag;
+    }
+
+    public int getWarningCount()
+    {
+        return this.warningCount;
+    }
+
+    public void incrementWarnings()
+    {
+        this.warningCount++;
+
+        if (this.warningCount % 2 == 0)
+        {
+            this.player.getWorld().strikeLightning(this.player.getLocation());
+            TFM_Util.playerMsg(this.player, ChatColor.RED + "You have been warned at least twice now, make sure to read the rules at " + TFM_ConfigEntry.SERVER_BAN_URL.getString());
+        }
+    }
+
+    public void cancel(BukkitTask task)
+    {
+        if (task == null)
+        {
+            return;
+        }
+
+        try
+        {
+            task.cancel();
+        }
+        catch (Exception ex)
+        {
+        }
+    }
+
+    public enum CageLayer
+    {
+        INNER, OUTER
+    }
+
+    private class TFM_BlockData
+    {
+        public Material material;
+        public Location location;
+
+        private TFM_BlockData(Location location, Material material)
+        {
+            this.location = location;
+            this.material = material;
+        }
+    }
+
+    private class ArrowShooter extends BukkitRunnable
+    {
+        private Player player;
+
+        private ArrowShooter(Player player)
+        {
+            this.player = player;
+        }
+
+        @Override
+        public void run()
+        {
+            Arrow shot = player.launchProjectile(Arrow.class);
+            shot.setVelocity(shot.getVelocity().multiply(2.0));
+        }
     }
 }

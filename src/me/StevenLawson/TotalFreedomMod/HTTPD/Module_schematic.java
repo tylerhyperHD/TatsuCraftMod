@@ -11,12 +11,12 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import me.StevenLawson.TotalFreedomMod.HTTPD.NanoHTTPD.Method;
 import me.StevenLawson.TotalFreedomMod.HTTPD.NanoHTTPD.Response;
-import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TFM_Admin;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
-import net.minecraft.util.org.apache.commons.io.FileUtils;
-import net.minecraft.util.org.apache.commons.lang3.StringEscapeUtils;
-import net.minecraft.util.org.apache.commons.lang3.StringUtils;
+import me.StevenLawson.TotalFreedomMod.TFM_Log;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class Module_schematic extends TFM_HTTPD_Module
 {
@@ -54,7 +54,7 @@ public class Module_schematic extends TFM_HTTPD_Module
 
     public String title()
     {
-        return "TatsuCraftMod :: Schematic Manager";
+        return "TotalFreedomMod :: Schematic Manager";
     }
 
     public String body() throws ResponseOverrideException
@@ -273,6 +273,7 @@ public class Module_schematic extends TFM_HTTPD_Module
         UPLOAD("upload"),
         DOWNLOAD("download"),
         INVALID(null);
+        //
         private final String modeName;
 
         private ModuleMode(String modeName)

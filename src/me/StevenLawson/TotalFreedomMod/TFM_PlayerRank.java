@@ -15,13 +15,10 @@ public enum TFM_PlayerRank
     SUPER("a " + ChatColor.GOLD + "Super Admin", ChatColor.GOLD + "[SA]"),
     TELNET("a " + ChatColor.DARK_GREEN + "Super Telnet Admin", ChatColor.DARK_GREEN + "[STA]"),
     SENIOR("a " + ChatColor.LIGHT_PURPLE + "Senior Admin", ChatColor.LIGHT_PURPLE + "[SrA]"),
-    EXECUTIVE("a " + ChatColor.DARK_RED + "Executive Senior Admin", ChatColor.DARK_RED + "[Exec]"),
-    BRONY("a... uh... " + ChatColor.LIGHT_PURPLE + "Brony?", ChatColor.LIGHT_PURPLE + "[Brony]"),
+    EXECUTIVE("an " + ChatColor.DARK_RED + "Executive Senior Admin", ChatColor.DARK_RED + "[Exec]"),
+    PERVERT("a " + ChatColor.LIGHT_PURPLE + "Pervert", ChatColor.LIGHT_PURPLE + "[Pervert]"),
+    BOI("the " + ChatColor.GOLD + "Dinner Warrior", ChatColor.GOLD + "[Boi]"),    
     OWNER("the " + ChatColor.BLUE + "Owner", ChatColor.BLUE + "[Owner]"),
-    PERV("a " + ChatColor.LIGHT_PURPLE + "Pervert", ChatColor.LIGHT_PURPLE + "[Pervert]"),
-    NUB(ChatColor.RED + "Nub", ChatColor.LIGHT_PURPLE + "[Pervert]"),
-    SADEV("a " + ChatColor.GOLD + "Super Admin" + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Developer", ChatColor.GOLD + "[SA]"),
-    STADEV("a " + ChatColor.DARK_GREEN + "Super Telnet Admin" + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Developer", ChatColor.DARK_GREEN + "[STA]"), //Not used right now
     CONSOLE("The " + ChatColor.DARK_PURPLE + "Console", ChatColor.DARK_PURPLE + "[Console]");
     private String loginMessage;
     private String prefix;
@@ -34,17 +31,21 @@ public enum TFM_PlayerRank
 
     public static String getLoginMessage(CommandSender sender)
     {
+        // Handle console
         if (!(sender instanceof Player))
         {
             return fromSender(sender).getLoginMessage();
         }
 
+        // Handle admins
         final TFM_Admin entry = TFM_AdminList.getEntry((Player) sender);
         if (entry == null)
         {
+            // Player is not an admin
             return fromSender(sender).getLoginMessage();
         }
 
+        // Custom login message
         final String loginMessage = entry.getCustomLoginMessage();
 
         if (loginMessage == null || loginMessage.isEmpty())
@@ -86,28 +87,18 @@ public enum TFM_PlayerRank
             {
                 return EXECUTIVE;
             }
-            if (sender.getName().equals("ImALuckyBrony"))
+            if (sender.getName().equals("Mah_Boi"))
             {
-                return BRONY;
+                return BOI;
+            }
+            if (sender.getName().equals("_Dezi"))
+            {
+                return PERVERT;
             }
             if (sender.getName().equals("neroblackcat"))
             {
-                return PERV;
+                return PERVERT;
             }
-            if (sender.getName().equals("Dirazi"))
-            {
-                return NUB;
-            }
-            if (sender.getName().equals("xDestroyer217"))
-            {
-                return SADEV;
-            }
-            if (sender.getName().equals("Got_No_Friends"))
-            {
-                return SADEV;
-            }
-            
-            
             if (entry.isSeniorAdmin())
             {
                 rank = SENIOR;

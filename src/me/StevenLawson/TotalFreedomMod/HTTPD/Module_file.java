@@ -13,8 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
-import static me.StevenLawson.TotalFreedomMod.HTTPD.NanoHTTPD.*;
+import me.StevenLawson.TotalFreedomMod.HTTPD.NanoHTTPD.Response;
+import org.apache.commons.lang3.StringUtils;
 
+/*
+ * This class was adapted from https://github.com/NanoHttpd/nanohttpd/blob/master/webserver/src/main/java/fi/iki/elonen/SimpleWebServer.java
+ */
 public class Module_file extends TFM_HTTPD_Module
 {
     private final File rootDir = new File(TFM_ConfigEntry.HTTPD_PUBLIC_FOLDER.getString());
@@ -93,6 +97,7 @@ public class Module_file extends TFM_HTTPD_Module
     {
         Response res = null;
 
+        // Make sure we won't die of an exception later
         if (!homeDir.isDirectory())
         {
             res = new Response(Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, "INTERNAL ERRROR: serveFile(): given homeDir is not a directory.");
@@ -100,12 +105,14 @@ public class Module_file extends TFM_HTTPD_Module
 
         if (res == null)
         {
+            // Remove URL arguments
             uri = uri.trim().replace(File.separatorChar, '/');
             if (uri.indexOf('?') >= 0)
             {
                 uri = uri.substring(0, uri.indexOf('?'));
             }
 
+            // Prohibit getting out of current directory
             if (uri.startsWith("src/main") || uri.endsWith("src/main") || uri.contains("../"))
             {
                 res = new Response(Response.Status.FORBIDDEN, NanoHTTPD.MIME_PLAINTEXT, "FORBIDDEN: Won't serve ../ for security reasons.");
@@ -118,8 +125,11 @@ public class Module_file extends TFM_HTTPD_Module
             res = new Response(Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "Error 404, file not found.");
         }
 
+        // List the directory, if necessary
         if (res == null && f.isDirectory())
         {
+            // Browsers get confused without '/' after the
+            // directory, send a redirect.
             if (!uri.endsWith("/"))
             {
                 uri += "/";
@@ -130,6 +140,7 @@ public class Module_file extends TFM_HTTPD_Module
 
             if (res == null)
             {
+                // First try index.html and index.htm
                 if (new File(f, "index.html").exists())
                 {
                     f = new File(homeDir, uri + "/index.html");
@@ -140,6 +151,7 @@ public class Module_file extends TFM_HTTPD_Module
                 }
                 else if (f.canRead())
                 {
+                    // No index file, list the directory if it is readable
                     res = new Response(listDirectory(uri, f));
                 }
                 else
@@ -153,6 +165,7 @@ public class Module_file extends TFM_HTTPD_Module
         {
             if (res == null)
             {
+                // Get MIME type from file name extension, if possible
                 String mime = null;
                 int dot = f.getCanonicalPath().lastIndexOf('.');
                 if (dot >= 0)
@@ -164,6 +177,7 @@ public class Module_file extends TFM_HTTPD_Module
                     mime = TFM_HTTPD_Manager.MIME_DEFAULT_BINARY;
                 }
 
+                // Calculate etag
                 String etag = Integer.toHexString((f.getAbsolutePath() + f.lastModified() + "" + f.length()).hashCode());
 
                 final long fileLen = f.length();
@@ -173,7 +187,7 @@ public class Module_file extends TFM_HTTPD_Module
                 final String range = params.get("range");
                 if (range != null)
                 {
-                    final String[] rangeParams = net.minecraft.util.org.apache.commons.lang3.StringUtils.split(range, "=");
+                    final String[] rangeParams = StringUtils.split(range, "=");
                     if (rangeParams.length >= 2)
                     {
                         if ("bytes".equalsIgnoreCase(rangeParams[0]))
@@ -212,6 +226,7 @@ public class Module_file extends TFM_HTTPD_Module
                     }
                 }
 
+                // Change return code and add Content-Range header when skipping is requested
                 if (range != null && startFrom >= 0)
                 {
                     if (startFrom >= fileLen)
@@ -262,7 +277,7 @@ public class Module_file extends TFM_HTTPD_Module
             res = new Response(Response.Status.FORBIDDEN, NanoHTTPD.MIME_PLAINTEXT, "FORBIDDEN: Reading file failed.");
         }
 
-        res.addHeader("Accept-Ranges", "bytes");
+        res.addHeader("Accept-Ranges", "bytes"); // Announce that the file server accepts partial content requestes
         return res;
     }
 
