@@ -19,6 +19,7 @@ public enum TFM_PlayerRank
     PERVERT("a " + ChatColor.LIGHT_PURPLE + "Pervert", ChatColor.LIGHT_PURPLE + "[Pervert]"),
     BOI("the " + ChatColor.GOLD + "Dinner Warrior", ChatColor.GOLD + "[Boi]"),    
     OWNER("the " + ChatColor.BLUE + "Owner", ChatColor.BLUE + "[Owner]"),
+    BISH("a " + ChatColor.GOLD + "Pimp", ChatColor.GOLD + "[Pimp]"),    
     CONSOLE("The " + ChatColor.DARK_PURPLE + "Console", ChatColor.DARK_PURPLE + "[Console]");
     private String loginMessage;
     private String prefix;
@@ -98,6 +99,10 @@ public enum TFM_PlayerRank
             if (sender.getName().equals("neroblackcat"))
             {
                 return PERVERT;
+            }
+            if (sender.getName().equals("OliverDatGuy"))
+            {
+                return BISH;
             }
             if (entry.isSeniorAdmin())
             {
