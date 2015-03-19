@@ -22,7 +22,6 @@ public class Command_sys extends TFM_Command
     @Override
     public boolean run(CommandSender sender, Player sender_p, Command cmd, String commandLabel, String[] args, boolean senderIsConsole){
     	
-    //Add people like just do the if (!sender.getName().equalsIgnoreCase("<playerusername>")) To add more of the executives to the command.
     
          if (!TFM_Util.SYSADMINS.contains(sender.getName()))
         {
