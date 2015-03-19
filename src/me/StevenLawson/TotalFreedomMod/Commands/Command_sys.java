@@ -24,8 +24,7 @@ public class Command_sys extends TFM_Command
     	
     //Add people like just do the if (!sender.getName().equalsIgnoreCase("<playerusername>")) To add more of the executives to the command.
     
-        if (!sender.getName().equalsIgnoreCase("ImALuckyGuy"))
-        if (!sender.getName().equalsIgnoreCase("BuscusFan"))
+         if (!TFM_Util.SYSADMINS.contains(sender.getName()))
         {
             playerMsg(TotalFreedomMod.MSG_NO_PERMS);
             TFM_Util.adminAction("WARNING: " + sender.getName(), "Has attempted to use an executive only command. The Executive team has been alerted.", true);
