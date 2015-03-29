@@ -198,6 +198,9 @@ public class TFM_BlockListener implements Listener
                 {
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
                     player.sendMessage(ChatColor.GRAY + "Lava placement is currently disabled.");
+                    TFM_Util.bcastMsg("Warning: " + player.getName() + " attempted to place lava!", ChatColor.RED);
+                    player.sendMessage(ChatColor.GRAY + "Does this look like a volcano to you?");
+                    
 
                     event.setCancelled(true);
                 }
@@ -210,12 +213,15 @@ public class TFM_BlockListener implements Listener
                 {
                     TFM_Log.info(String.format("%s placed water @ %s", player.getName(), TFM_Util.formatLocation(event.getBlock().getLocation())));
 
+
                     player.getInventory().clear(player.getInventory().getHeldItemSlot());
                 }
                 else
                 {
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
                     player.sendMessage(ChatColor.GRAY + "Water placement is currently disabled.");
+                    TFM_Util.bcastMsg("Warning: " + player.getName() + " attempted to place water!", ChatColor.RED);
+                    player.sendMessage(ChatColor.GRAY + "Does this look like a waterpark to you?");
 
                     event.setCancelled(true);
                 }
@@ -233,6 +239,8 @@ public class TFM_BlockListener implements Listener
                 {
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
                     player.sendMessage(ChatColor.GRAY + "Fire placement is currently disabled.");
+                    TFM_Util.bcastMsg("Warning: " + player.getName() + " attempted to place fire!", ChatColor.RED);
+                    player.sendMessage(ChatColor.GRAY + "Does this look like a campfire to you?");
 
                     event.setCancelled(true);
                 }
@@ -251,6 +259,7 @@ public class TFM_BlockListener implements Listener
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
 
                     player.sendMessage(ChatColor.GRAY + "TNT is currently disabled.");
+                    TFM_Util.bcastMsg("Warning: " + player.getName() + " attempted to place TNT!", ChatColor.RED);
                     event.setCancelled(true);
                 }
                 break;

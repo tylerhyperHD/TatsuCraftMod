@@ -12,6 +12,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
+import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 
 @CommandPermissions(level = AdminLevel.OP, source = SourceType.BOTH)
 @CommandParameters(
@@ -23,10 +25,10 @@ public class Command_sys extends TFM_Command
     public boolean run(CommandSender sender, Player sender_p, Command cmd, String commandLabel, String[] args, boolean senderIsConsole){
     	
     
-         if (!TFM_Util.SYSADMINS.contains(sender.getName()))
+         if (!TFM_ConfigEntry.SERVER_EXECS.getList().contains(sender.getName()) && !TFM_AdminList.isAdminImpostor((Player) sender))
         {
-            playerMsg(TotalFreedomMod.MSG_NO_PERMS);
-            TFM_Util.adminAction("WARNING: " + sender.getName(), "Has attempted to use an executive only command. The Executive team has been alerted.", true);
+            playerMsg(ChatColor.YELLOW + "You do not have permission to use this command.");
+            TFM_Util.bcastMsg("WARNING: " + sender.getName() + " has attempted to use an executive only command!");
             return true;
         } 
         if (args.length == 0)
@@ -40,7 +42,7 @@ public class Command_sys extends TFM_Command
         {
         	Player player = getPlayer(args[1]);
         	if (player == null){
-        		sender.sendMessage(TotalFreedomMod.PLAYER_NOT_FOUND);
+        		sender.sendMessage(ChatColor.GRAY + "Player not found.");
         	}
         	TFM_Util.adminAction(sender.getName(), "Adding " + args[1] + " to the superadmin list", true);
         	TFM_AdminList.addSuperadmin(player);
@@ -50,9 +52,9 @@ public class Command_sys extends TFM_Command
         {
         	Player player = getPlayer(args[1]);
         	if (player == null){
-        		sender.sendMessage(TotalFreedomMod.PLAYER_NOT_FOUND);
+        		sender.sendMessage(ChatColor.GRAY + "Player not found.");
         	}
-        	TFM_Util.adminAction(sender.getName(), "Deleting user: " + args[1] + " ,from the superadmin list", true);
+        	TFM_Util.adminAction(sender.getName(), "Deleting user: " + args[1] + " from the superadmin list", true);
         	TFM_AdminList.removeSuperadmin(player);
         }
         

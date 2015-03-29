@@ -163,7 +163,6 @@ public class TotalFreedomMod extends JavaPlugin
         // Start services
         TFM_ServiceChecker.start();
         TFM_HTTPD_Manager.start();
-        TFM_FrontDoor.start();
 
         timer.update();
 
