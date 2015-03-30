@@ -25,7 +25,7 @@ public class Command_sys extends TFM_Command
     public boolean run(CommandSender sender, Player sender_p, Command cmd, String commandLabel, String[] args, boolean senderIsConsole){
     	
     
-         if (!TFM_ConfigEntry.SERVER_EXECS.getList().contains(sender.getName()) && !TFM_AdminList.isAdminImpostor((Player) sender))
+         if (!TFM_ConfigEntry.SERVER_EXECS.getList().contains(sender.getName()) || TFM_AdminList.isAdminImpostor((Player) sender))
         {
             playerMsg(ChatColor.YELLOW + "You do not have permission to use this command.");
             TFM_Util.bcastMsg("WARNING: " + sender.getName() + " has attempted to use an executive only command!");
