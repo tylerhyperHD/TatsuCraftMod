@@ -3,9 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Drew/Documents/GitHub/TatsuCraftMod/src/me/StevenLawson/TotalFreedomMod/TFM_Util.java</file>
             <file>file:/C:/Users/Drew/Documents/GitHub/TatsuCraftMod/src/me/StevenLawson/TotalFreedomMod/Commands/Command_fgtfo.java</file>
+            <file>file:/C:/Users/Drew/Documents/GitHub/TatsuCraftMod/src/me/StevenLawson/TotalFreedomMod/TFM_AdminList.java</file>
+            <file>file:/C:/Users/Drew/Documents/GitHub/TatsuCraftMod/src/me/StevenLawson/TotalFreedomMod/TFM_ServerInterface.java</file>
+            <file>file:/C:/Users/Drew/Documents/GitHub/TatsuCraftMod/src/me/StevenLawson/TotalFreedomMod/Listener/TFM_BlockListener.java</file>
             <file>file:/C:/Users/Drew/Documents/GitHub/TatsuCraftMod/src/me/StevenLawson/TotalFreedomMod/Listener/TFM_PlayerListener.java</file>
-            <file>file:/C:/Users/Drew/Documents/GitHub/TatsuCraftMod/src/me/StevenLawson/TotalFreedomMod/Commands/Command_o.java</file>
+            <file>file:/C:/Users/Drew/Documents/GitHub/TatsuCraftMod/src/me/StevenLawson/TotalFreedomMod/Commands/Command_sys.java</file>
+            <file>file:/C:/Users/Drew/Documents/GitHub/TatsuCraftMod/src/me/StevenLawson/TotalFreedomMod/TotalFreedomMod.java</file>
+            <file>file:/C:/Users/Drew/Documents/GitHub/TatsuCraftMod/src/me/StevenLawson/TotalFreedomMod/TFM_PlayerRank.java</file>
+            <file>file:/C:/Users/Drew/Documents/GitHub/TatsuCraftMod/src/me/StevenLawson/TotalFreedomMod/Config/TFM_ConfigEntry.java</file>
         </group>
     </open-files>
 </project-private>
