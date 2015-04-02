@@ -644,7 +644,8 @@ public class TFM_PlayerListener implements Listener
             // Set the tag
             if (playerdata.getTag() != null)
             {
-                event.setFormat("<" + playerdata.getTag().replaceAll("%", "%%") + " %1$s> %2$s");
+                event.setFormat(playerdata.getTag().replaceAll("%", "%%") + " %1$s" + ChatColor.GRAY + ":" + ChatColor.RESET + " %2$s");
+                
             }
         }
         catch (Exception ex)
