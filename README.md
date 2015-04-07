@@ -1,3 +1,4 @@
+[![Build Status](https://drone.io/github.com/TatsuCraft/TatsuCraftMod/status.png)](https://drone.io/github.com/TatsuCraft/TatsuCraftMod/latest)
 # TotalFreedomMod #
 
 TotalFreedomMod is a CraftBukkit server plugin designed primarily to support the [Official TotalFreedom Minecraft Server](http://totalfreedom.me/). However, you are more than welcome to adapt the source for your own server.
