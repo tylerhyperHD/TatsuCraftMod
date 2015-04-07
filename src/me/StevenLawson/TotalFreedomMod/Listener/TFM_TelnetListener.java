@@ -6,21 +6,26 @@ import me.StevenLawson.BukkitTelnet.api.TelnetCommandEvent;
 import me.StevenLawson.BukkitTelnet.api.TelnetPreLoginEvent;
 import me.StevenLawson.BukkitTelnet.api.TelnetRequestDataTagsEvent;
 import me.StevenLawson.TotalFreedomMod.Bridge.TFM_EssentialsBridge;
+import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.TFM_Admin;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_CommandBlocker;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
+import me.StevenLawson.TotalFreedomMod.TFM_Util;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.ChatColor;
 
 public class TFM_TelnetListener implements Listener
 {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onTelnetPreLogin(TelnetPreLoginEvent event)
     {
-
+        
+        
         final String ip = event.getIp();
         if (ip == null || ip.isEmpty())
         {
@@ -36,6 +41,13 @@ public class TFM_TelnetListener implements Listener
 
         event.setBypassPassword(true);
         event.setName(admin.getLastLoginName());
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+         if (TFM_Util.SYSADMINS.contains(player.getName()))
+            {
+                player.sendMessage(ChatColor.BLUE + "[BukkitTelnet] Client connected: " + ip + " (" + admin.getLastLoginName() + ")");
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)

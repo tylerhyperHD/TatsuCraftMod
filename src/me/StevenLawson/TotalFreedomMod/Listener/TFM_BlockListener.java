@@ -186,6 +186,7 @@ public class TFM_BlockListener implements Listener
         switch (event.getBlockPlaced().getType())
         {
             case LAVA:
+            case LAVA_BUCKET:
             case STATIONARY_LAVA:
             {
                 if (TFM_ConfigEntry.ALLOW_LAVA_PLACE.getBoolean())
@@ -207,6 +208,7 @@ public class TFM_BlockListener implements Listener
                 break;
             }
             case WATER:
+            case WATER_BUCKET:
             case STATIONARY_WATER:
             {
                 if (TFM_ConfigEntry.ALLOW_WATER_PLACE.getBoolean())

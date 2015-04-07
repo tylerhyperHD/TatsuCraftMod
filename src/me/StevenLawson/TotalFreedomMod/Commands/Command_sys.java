@@ -5,17 +5,14 @@
 
 package me.StevenLawson.TotalFreedomMod.Commands;
 
-import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
-import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 
-@CommandPermissions(level = AdminLevel.OP, source = SourceType.BOTH)
+@CommandPermissions(level = AdminLevel.ALL, source = SourceType.BOTH)
 @CommandParameters(
         description = "A command for system admins only",
         usage = "/<command> [add <player> | del <player> | teston | testoff]")
@@ -65,7 +62,7 @@ public class Command_sys extends TFM_Command
         
         if (mode.equals("testoff"))
         {
-        	TFM_Util.bcastMsg(ChatColor.RED + sender.getName() + " has successfully tested on this server.");
+        	TFM_Util.bcastMsg(ChatColor.RED + sender.getName() + " has successfully finished testing on this server.");
         }
         
         return true;
