@@ -1,3 +1,3 @@
-# TotalFreedomMod License #
+https://github.com/TatsuCraft/License/blob/master/TatsuCraft/Creative/TotalFreedomLicense.md
 
-TotalFreedomMod is licensed under the TotalFreedom General License. It is available [here](https://github.com/TotalFreedom/License/blob/master/LICENSE.md).
+// They have to go there if they need to see the License.
