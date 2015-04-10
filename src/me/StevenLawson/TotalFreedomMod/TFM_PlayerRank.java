@@ -17,6 +17,7 @@ public enum TFM_PlayerRank
     SENIOR("a " + ChatColor.LIGHT_PURPLE + "Senior Admin", ChatColor.LIGHT_PURPLE + "[SrA]"),
     EXECUTIVE("an " + ChatColor.DARK_RED + "Executive Senior Admin", ChatColor.DARK_RED + "[Exec]"),
     PERVERT("a " + ChatColor.LIGHT_PURPLE + "Pervert", ChatColor.LIGHT_PURPLE + "[Pervert]"),
+    HO("a " + ChatColor.LIGHT_PURPLE + "Ho", ChatColor.LIGHT_PURPLE + "[Ho]"),
     BOI("the " + ChatColor.GOLD + "Dinner Warrior", ChatColor.GOLD + "[Boi]"),    
     OWNER("the " + ChatColor.BLUE + "Owner", ChatColor.BLUE + "[Owner]"),
     BISH("a " + ChatColor.GOLD + "Pimp", ChatColor.GOLD + "[Pimp]"),    
@@ -98,7 +99,7 @@ public enum TFM_PlayerRank
             }
             if (sender.getName().equals("neroblackcat"))
             {
-                return PERVERT;
+                return HO;
             }
             if (sender.getName().equals("OliverDatGuy"))
             {
