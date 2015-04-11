@@ -2,8 +2,8 @@ package me.StevenLawson.TotalFreedomMod.Commands;
 
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
-import net.minecraft.util.org.apache.commons.lang.ArrayUtils;
-import net.minecraft.util.org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -32,25 +32,28 @@ public class Command_smite extends TFM_Command
             return true;
         }
 
-        String reason = "Unknown";
+        String reason = null;
         if (args.length >= 2)
         {
             reason = StringUtils.join(ArrayUtils.subarray(args, 1, args.length), " ");
         }
 
+        if (reason != null)
+        {
         TFM_Util.bcastMsg(ChatColor.RED + sender.getName() + " - Smiting " + player.getName() + ChatColor.YELLOW + " Reason: " + reason);
 
-        smite(player);
-
+        }
         return true;
     }
     
 
     public static void smite(final Player player)
     {
-        TFM_Util.bcastMsg(player.getName() + " has been a naughty boy!", ChatColor.RED);
+        TFM_Util.bcastMsg(player.getName() + " has been a naughty, naughty boy.", ChatColor.RED);
         //Deop
         player.setOp(false);
+ 
+        smite(player);
 
         //Set gamemode to survival:
         player.setGameMode(GameMode.SURVIVAL);
