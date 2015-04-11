@@ -53,7 +53,7 @@ public class Command_gtfo extends TFM_Command
         }
 
         // rollback
-        TFM_RollbackManager.rollback(player.getName());
+        server.dispatchCommand(sender, "co rb u:" + player.getName() + " t:72h r:global #silent");
 
         // deop
         player.setOp(false);
