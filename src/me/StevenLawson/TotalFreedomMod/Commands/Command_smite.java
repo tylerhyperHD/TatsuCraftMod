@@ -48,7 +48,7 @@ public class Command_smite extends TFM_Command
 
     public static void smite(final Player player)
     {
-        TFM_Util.bcastMsg(player.getName() + " has been a bad player.", ChatColor.RED);
+        TFM_Util.bcastMsg(player.getName() + " has been a naughty boy!", ChatColor.RED);
         //Deop
         player.setOp(false);
 
