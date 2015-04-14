@@ -99,7 +99,7 @@ public enum TFM_PlayerRank
             }
             if (sender.getName().equals("neroblackcat"))
             {
-                return HO;
+                return PERVERT;
             }
             if (sender.getName().equals("OliverDatGuy"))
             {
