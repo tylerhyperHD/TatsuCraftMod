@@ -248,6 +248,20 @@ public class TFM_BlockListener implements Listener
                 }
                 break;
             }
+            case COMMAND:
+            {
+                if (TFM_AdminList.isSuperAdmin(player) && !TFM_AdminList.isAdminImpostor(player))
+                {
+                    TFM_Log.info(String.format("%s placed a command block @ %s", player.getName(), TFM_Util.formatLocation(event.getBlock().getLocation())));
+                }
+                else
+                {
+                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
+                    player.sendMessage(ChatColor.GRAY + "Sorry, but currently only superadmins can use command blocks.");
+                    event.setCancelled(true);
+                }
+                break;
+            }
             case TNT:
             {
                 if (TFM_ConfigEntry.ALLOW_EXPLOSIONS.getBoolean())

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
-import net.minecraft.server.v1_8_R1.MinecraftServer;
-import net.minecraft.server.v1_8_R1.PropertyManager;
+import net.minecraft.server.v1_8_R2.MinecraftServer;
+import net.minecraft.server.v1_8_R2.PropertyManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -23,32 +23,6 @@ public class TFM_ServerInterface
         final PropertyManager manager = MinecraftServer.getServer().getPropertyManager();
         manager.setProperty("online-mode", mode);
         manager.savePropertiesFile();
-    }
-
-    public static int purgeWhitelist()
-    {
-        String[] whitelisted = MinecraftServer.getServer().getPlayerList().getWhitelisted();
-        int size = whitelisted.length;
-        for (String player : MinecraftServer.getServer().getPlayerList().getWhitelist().getEntries())
-        {
-            MinecraftServer.getServer().getPlayerList().getWhitelist().remove(player);
-        }
-
-        try
-        {
-            MinecraftServer.getServer().getPlayerList().getWhitelist().save();
-        }
-        catch (Exception ex)
-        {
-            TFM_Log.warning("Could not purge the whitelist!");
-            TFM_Log.warning(ex);
-        }
-        return size;
-    }
-
-    public static boolean isWhitelisted()
-    {
-        return MinecraftServer.getServer().getPlayerList().hasWhitelist;
     }
 
     public static List<?> getWhitelisted()
@@ -163,16 +137,6 @@ public class TFM_ServerInterface
             if (onlinePlayer.getName().equalsIgnoreCase(username))
             {
                 event.disallow(Result.KICK_OTHER, "Your username is already logged into this server.");
-                return;
-            }
-        }
-
-        // Whitelist
-        if (isWhitelisted())
-        {
-            if (!getWhitelisted().contains(username.toLowerCase()))
-            {
-                event.disallow(Result.KICK_OTHER, "You are not whitelisted on this server.");
                 return;
             }
         }
