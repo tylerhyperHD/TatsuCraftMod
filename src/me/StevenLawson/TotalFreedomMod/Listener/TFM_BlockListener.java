@@ -250,14 +250,14 @@ public class TFM_BlockListener implements Listener
             }
             case COMMAND:
             {
-                if (TFM_AdminList.isSuperAdmin(player) && !TFM_AdminList.isAdminImpostor(player))
+                if (TFM_AdminList.isTelnetAdmin(player, true) || (TFM_AdminList.isSeniorAdmin(player, true) && !TFM_AdminList.isAdminImpostor(player)))
                 {
                     TFM_Log.info(String.format("%s placed a command block @ %s", player.getName(), TFM_Util.formatLocation(event.getBlock().getLocation())));
                 }
                 else
                 {
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
-                    player.sendMessage(ChatColor.GRAY + "Sorry, but currently only superadmins can use command blocks.");
+                    player.sendMessage(ChatColor.DARK_RED + "Sorry, but you do not have sufficient permissions to use command blocks.");
                     event.setCancelled(true);
                 }
                 break;
