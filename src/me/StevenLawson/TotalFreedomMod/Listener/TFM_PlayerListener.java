@@ -20,8 +20,6 @@ import me.StevenLawson.TotalFreedomMod.TFM_Player;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerList;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerRank;
-import me.StevenLawson.TotalFreedomMod.TFM_RollbackManager;
-import me.StevenLawson.TotalFreedomMod.TFM_RollbackManager.RollbackEntry;
 import me.StevenLawson.TotalFreedomMod.TFM_ServerInterface;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import me.StevenLawson.TotalFreedomMod.TFM_UuidManager;
@@ -123,37 +121,6 @@ public class TFM_PlayerListener implements Listener
             {
                 switch (event.getMaterial())
                 {
-                    case STICK:
-                    {
-                        if (!TFM_AdminList.isSuperAdmin(player))
-                        {
-                            break;
-                        }
-
-                        event.setCancelled(true);
-
-                        final Location location = TFM_DepreciationAggregator.getTargetBlock(player, null, 5).getLocation();
-                        final List<RollbackEntry> entries = TFM_RollbackManager.getEntriesAtLocation(location);
-
-                        if (entries.isEmpty())
-                        {
-                            TFM_Util.playerMsg(player, "No block edits at that location.");
-                            break;
-                        }
-
-                        TFM_Util.playerMsg(player, "Block edits at ("
-                                + ChatColor.WHITE + "x" + location.getBlockX()
-                                + ", y" + location.getBlockY()
-                                + ", z" + location.getBlockZ()
-                                + ChatColor.BLUE + ")" + ChatColor.WHITE + ":", ChatColor.BLUE);
-                        for (RollbackEntry entry : entries)
-                        {
-                            TFM_Util.playerMsg(player, " - " + ChatColor.BLUE + entry.author + " " + entry.getType() + " "
-                                    + StringUtils.capitalize(entry.getMaterial().toString().toLowerCase()) + (entry.data == 0 ? "" : ":" + entry.data));
-                        }
-
-                        break;
-                    }
 
                     case BONE:
                     {

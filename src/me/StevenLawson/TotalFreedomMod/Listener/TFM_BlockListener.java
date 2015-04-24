@@ -6,7 +6,6 @@ import me.StevenLawson.TotalFreedomMod.TFM_Heartbeat;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
 import me.StevenLawson.TotalFreedomMod.TFM_ProtectedArea;
-import me.StevenLawson.TotalFreedomMod.TFM_RollbackManager;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import me.StevenLawson.TotalFreedomMod.TotalFreedomMod;
 import org.bukkit.ChatColor;
@@ -280,24 +279,6 @@ public class TFM_BlockListener implements Listener
                 }
                 break;
             }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onRollbackBlockBreak(BlockBreakEvent event)
-    {
-        if (!TFM_AdminList.isSuperAdmin(event.getPlayer()))
-        {
-            TFM_RollbackManager.blockBreak(event);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onRollbackBlockPlace(BlockPlaceEvent event)
-    {
-        if (!TFM_AdminList.isSuperAdmin(event.getPlayer()))
-        {
-            TFM_RollbackManager.blockPlace(event);
         }
     }
 
