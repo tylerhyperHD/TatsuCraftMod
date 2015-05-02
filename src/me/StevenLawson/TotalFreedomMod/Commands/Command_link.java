@@ -14,7 +14,7 @@ public class Command_link extends TFM_Command
     public boolean run(CommandSender sender, Player sender_p, Command cmd, String commandLabel, String[] args, boolean senderIsConsole)
     {
 
-      playerMsg(ChatColor.BLUE "Our forums are " + "http://tastuscraft.boards.net");
+        playerMsg(ChatColor.BLUE + "Our forums are " + "http://tastuscraft.boards.net");
 
         return true;
     }
