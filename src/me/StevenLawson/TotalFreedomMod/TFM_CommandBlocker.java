@@ -175,10 +175,12 @@ public class TFM_CommandBlocker
     {
         ANYONE("a", 0),
         OP("o", 1),
-        SUPER("s", 2),
-        TELNET("t", 3),
-        SENIOR("c", 4),
-        NOBODY("n", 5);
+        DONATOR("d", 2),
+        DONATORPLUS("p", 3),
+        SUPER("s", 4),
+        TELNET("t", 5),
+        SENIOR("c", 6),
+        NOBODY("n", 7);
         private final String token;
         private final int level;
 
@@ -205,6 +207,14 @@ public class TFM_CommandBlocker
                 if (sender.isOp())
                 {
                     return OP;
+                }
+                if (TFM_DonatorList.isDonatorPlus(sender))
+                {
+                    return DONATORPLUS;
+                }                
+                if (TFM_DonatorList.isDonator(sender))
+                {
+                    return DONATOR;
                 }
 
                 return ANYONE;

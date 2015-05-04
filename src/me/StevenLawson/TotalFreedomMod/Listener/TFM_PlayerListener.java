@@ -13,6 +13,7 @@ import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_BanManager;
 import me.StevenLawson.TotalFreedomMod.TFM_CommandBlocker;
 import me.StevenLawson.TotalFreedomMod.TFM_DepreciationAggregator;
+import me.StevenLawson.TotalFreedomMod.TFM_DonatorList;
 import me.StevenLawson.TotalFreedomMod.TFM_Heartbeat;
 import me.StevenLawson.TotalFreedomMod.TFM_Jumppads;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
@@ -611,7 +612,7 @@ public class TFM_PlayerListener implements Listener
             // Set the tag
             if (playerdata.getTag() != null)
             {
-                event.setFormat(playerdata.getTag().replaceAll("%", "%%") + " %1$s" + ChatColor.GRAY + ":" + ChatColor.RESET + " %2$s");
+                event.setFormat(playerdata.getTag().replaceAll("%", "%%") + " %1$s" + ChatColor.DARK_GRAY + ":" + ChatColor.RESET + " %2$s");
                 
             }
         }
@@ -805,7 +806,8 @@ public class TFM_PlayerListener implements Listener
         if (TFM_AdminList.isAdminImpostor(player))
         {
             TFM_Util.bcastMsg(ChatColor.AQUA + player.getName() + " is " + TFM_PlayerRank.getLoginMessage(player));
-            TFM_Util.bcastMsg(player.getName() + " might be a fake! IP: " + IP, ChatColor.RED);
+            String iprange = TFM_Util.getFuzzyIp(player.getAddress().getAddress().getHostAddress());
+            TFM_Util.bcastMsg(player.getName() + " might be a fake! IP: " + iprange, ChatColor.RED);
             player.getInventory().clear();
             player.setOp(false);
             player.setGameMode(GameMode.SURVIVAL);
@@ -827,31 +829,56 @@ public class TFM_PlayerListener implements Listener
         {
             player.setPlayerListName(ChatColor.BLUE + player.getName());
             TFM_PlayerData.getPlayerData(player).setTag("&8[&9Owner&8]");
-
+        }
+        else if (player.getName().equals("Reflet") || (player.getName().equals("Marth_") || (player.getName().equals("BuscusFan"))))
+        {
+            TFM_PlayerData.getPlayerData(player).setTag("&8[&4Executive&8]");
         }
         else if (TFM_AdminList.isSeniorAdmin(player))
         {
             name = ChatColor.LIGHT_PURPLE + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&dSenior Admin&8]");
         }
+        else if (TFM_DonatorList.isDonator(player) && (TFM_AdminList.isSeniorAdmin(player)))
+        {
+            name = ChatColor.LIGHT_PURPLE + name;
+            TFM_PlayerData.getPlayerData(player).setTag("&8[&dSenior Admin &8+ &5Donator&8]");
+        }
+        else if (TFM_DonatorList.isDonatorPlus(player) && (TFM_AdminList.isSeniorAdmin(player)))
+        {
+            name = ChatColor.LIGHT_PURPLE + name;
+            TFM_PlayerData.getPlayerData(player).setTag("&8[&dSenior Admin &8+ &dDonator+&8]");
+        }
         else if (TFM_AdminList.isTelnetAdmin(player, true))
         {
             name = ChatColor.DARK_GREEN + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&2Telnet Admin&8]");
+        }
+        else if (TFM_DonatorList.isDonator(player) && (TFM_AdminList.isTelnetAdmin(player, true)))
+        {
+            name = ChatColor.LIGHT_PURPLE + name;
+            TFM_PlayerData.getPlayerData(player).setTag("&8[&2Telnet Admin &8+ &5Donator&8]");
+        }
+        else if (TFM_DonatorList.isDonatorPlus(player) && (TFM_AdminList.isTelnetAdmin(player, true)))
+        {
+            name = ChatColor.LIGHT_PURPLE + name;
+            TFM_PlayerData.getPlayerData(player).setTag("&8[&2Telnet Admin &8+ &dDonator+&8]");
         }
         else if (TFM_AdminList.isSuperAdmin(player))
         {
             name = ChatColor.AQUA + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&BSuper Admin&8]");
         }
-         if (TFM_ConfigEntry.SERVER_OWNERS.getList().contains(player))
-            {
-               TFM_PlayerData.getPlayerData(player).setTag("&8[&6Owner&8]");
-            }
-         if (TFM_ConfigEntry.SERVER_EXECS.getList().contains(player))
-            {
-               TFM_PlayerData.getPlayerData(player).setTag("&8[&4Executive&8]");
-            }
+        else if (TFM_DonatorList.isDonator(player) && (TFM_AdminList.isSuperAdmin(player)))
+        {
+            name = ChatColor.LIGHT_PURPLE + name;
+            TFM_PlayerData.getPlayerData(player).setTag("&8[&bSuper Admin &8+ &5Donator&8]");
+        }
+        else if (TFM_DonatorList.isDonatorPlus(player) && (TFM_AdminList.isSuperAdmin(player)))
+        {
+            name = ChatColor.LIGHT_PURPLE + name;
+            TFM_PlayerData.getPlayerData(player).setTag("&8[&bSuper Admin &8+ &dDonator+&8]");
+        }
 
         try
         {

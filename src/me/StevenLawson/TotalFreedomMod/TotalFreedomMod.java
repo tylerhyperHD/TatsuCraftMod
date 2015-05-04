@@ -36,6 +36,7 @@ public class TotalFreedomMod extends JavaPlugin
     //
     public static final String CONFIG_FILENAME = "config.yml";
     public static final String SUPERADMIN_FILENAME = "superadmin.yml";
+    public static final String DONATOR_FILENAME = "donators.yml";
     public static final String PERMBAN_FILENAME = "permban.yml";
     public static final String PROTECTED_AREA_FILENAME = "protectedareas.dat";
     public static final String SAVED_FLAGS_FILENAME = "savedflags.dat";
@@ -91,11 +92,13 @@ public class TotalFreedomMod extends JavaPlugin
         // Create backups
         TFM_Util.createBackups(CONFIG_FILENAME, true);
         TFM_Util.createBackups(SUPERADMIN_FILENAME);
+        TFM_Util.createBackups(DONATOR_FILENAME);
         TFM_Util.createBackups(PERMBAN_FILENAME);
 
         // Load services
         TFM_UuidManager.load();
         TFM_AdminList.load();
+        TFM_DonatorList.load();
         TFM_PermbanList.load();
         TFM_PlayerList.load();
         TFM_BanManager.load();

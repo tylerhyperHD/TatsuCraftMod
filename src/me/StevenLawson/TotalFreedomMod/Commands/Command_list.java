@@ -3,6 +3,7 @@ package me.StevenLawson.TotalFreedomMod.Commands;
 import java.util.ArrayList;
 import java.util.List;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
+import me.StevenLawson.TotalFreedomMod.TFM_DonatorList;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerRank;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import org.apache.commons.lang3.StringUtils;
@@ -12,13 +13,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandPermissions(level = AdminLevel.ALL, source = SourceType.BOTH)
-@CommandParameters(description = "Lists the real names of all online players.", usage = "/<command> [-a | -i]", aliases = "who")
+@CommandParameters(description = "Lists the real names of all online players.", usage = "/<command> [-a | -d | -i]", aliases = "who")
 public class Command_list extends TFM_Command
 {
     private static enum ListFilter
     {
         ALL,
         ADMINS,
+        DONATORS,
         IMPOSTORS;
     }
 
@@ -52,6 +54,10 @@ public class Command_list extends TFM_Command
             {
                 listFilter = ListFilter.IMPOSTORS;
             }
+            else if ("-d".equals(args[0]))
+            {
+                listFilter = ListFilter.DONATORS;
+            }
             else
             {
                 return false;
@@ -73,6 +79,11 @@ public class Command_list extends TFM_Command
         for (Player player : server.getOnlinePlayers())
         {
             if (listFilter == ListFilter.ADMINS && !TFM_AdminList.isSuperAdmin(player))
+            {
+                continue;
+            }
+            
+            if (listFilter == ListFilter.DONATORS && !TFM_DonatorList.isDonator(player))
             {
                 continue;
             }

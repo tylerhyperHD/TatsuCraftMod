@@ -12,9 +12,17 @@ public enum TFM_PlayerRank
     IMPOSTOR("an " + ChatColor.YELLOW + ChatColor.UNDERLINE + "Impostor", ChatColor.YELLOW.toString() + ChatColor.UNDERLINE + "[IMP]"),
     NON_OP("a " + ChatColor.GREEN + "Non-OP", ChatColor.GREEN.toString()),
     OP("an " + ChatColor.RED + "OP", ChatColor.RED + "[OP]"),
+    DONATOR("a " + ChatColor.DARK_PURPLE + "Donator", ChatColor.DARK_PURPLE + "[Donator]"),
+    DONATORPLUS("a " + ChatColor.LIGHT_PURPLE + "Donator+", ChatColor.LIGHT_PURPLE + "[Donator+]"),
     SUPER("a " + ChatColor.GOLD + "Super Admin", ChatColor.GOLD + "[SA]"),
+    SUPERD("a " + ChatColor.GOLD + "Super Admin " + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Donator", ChatColor.GOLD + "[SA " + ChatColor.DARK_GRAY + "+" + ChatColor.DARK_PURPLE + "Donator]"),
+    SUPERDP("a " + ChatColor.GOLD + "Super Admin " + ChatColor.AQUA + "and " + ChatColor.LIGHT_PURPLE + "Donator+", ChatColor.GOLD + "[SA " + ChatColor.DARK_GRAY + "+" + ChatColor.LIGHT_PURPLE + "Donator+]"),    
     TELNET("a " + ChatColor.DARK_GREEN + "Super Telnet Admin", ChatColor.DARK_GREEN + "[STA]"),
+    TELNETD("a " + ChatColor.DARK_GREEN + "Super Telnet Admin " + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Donator", ChatColor.DARK_GREEN + "[STA " + ChatColor.DARK_GRAY + "+" + ChatColor.DARK_PURPLE + "Donator]"),
+    TELNETDP("a " + ChatColor.DARK_GREEN + "Super Telnet Admin " + ChatColor.AQUA + "and " + ChatColor.LIGHT_PURPLE + "Donator+", ChatColor.DARK_GREEN + "[STA " + ChatColor.DARK_GRAY + "+" + ChatColor.LIGHT_PURPLE + "Donator+]"),
     SENIOR("a " + ChatColor.LIGHT_PURPLE + "Senior Admin", ChatColor.LIGHT_PURPLE + "[SrA]"),
+    SENIORD("a " + ChatColor.LIGHT_PURPLE + "Senior Admin " + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Donator", ChatColor.LIGHT_PURPLE + "[SrA " + ChatColor.DARK_GRAY + "+" + ChatColor.DARK_PURPLE + "Donator]"),
+    SENIORDP("a " + ChatColor.LIGHT_PURPLE + "Senior Admin " + ChatColor.AQUA + "and " + ChatColor.LIGHT_PURPLE + "Donator+", ChatColor.LIGHT_PURPLE + "[SrA " + ChatColor.DARK_GRAY + "+" + ChatColor.LIGHT_PURPLE + "Donator+]"),
     EXECUTIVE("an " + ChatColor.DARK_RED + "Executive Senior Admin", ChatColor.DARK_RED + "[Exec]"),
     PERVERT("a " + ChatColor.LIGHT_PURPLE + "Pervert", ChatColor.LIGHT_PURPLE + "[Pervert]"),
     HO("a " + ChatColor.LIGHT_PURPLE + "Ho", ChatColor.LIGHT_PURPLE + "[Ho]"),
@@ -74,8 +82,18 @@ public enum TFM_PlayerRank
         {
             return DEVELOPER;
         }
+        if (TFM_DonatorList.isDonatorPlus(sender))
+        {
+            return DONATORPLUS;
+        }       
+        else if (TFM_DonatorList.isDonator(sender))
+        {
+            return DONATOR;
+        }
+
 
         final TFM_Admin entry = TFM_AdminList.getEntry((Player) sender);
+        final TFM_Donator dEntry = TFM_DonatorList.getEntry((Player) sender);
 
         final TFM_PlayerRank rank;
 
@@ -89,11 +107,7 @@ public enum TFM_PlayerRank
             {
                 return EXECUTIVE;
             }
-            if (sender.getName().equals("Mah_Boi"))
-            {
-                return BOI;
-            }
-            if (sender.getName().equals("_Dezi"))
+            if (sender.getName().equals("DeziThePenguin"))
             {
                 return PERVERT;
             }
@@ -105,13 +119,37 @@ public enum TFM_PlayerRank
             {
                 return BISH;
             }
-            if (entry.isSeniorAdmin())
+            if (entry.isSeniorAdmin() && !TFM_DonatorList.isDonator(sender))
             {
                 rank = SENIOR;
             }
-            else if (entry.isTelnetAdmin())
+            else if (entry.isSeniorAdmin() && TFM_DonatorList.isDonator(sender))
+            {
+                rank = SENIORD;
+            }
+            else if (entry.isSeniorAdmin() && TFM_DonatorList.isDonatorPlus(sender))
+            {
+                rank = SENIORDP;
+            }
+            else if (entry.isTelnetAdmin() && !TFM_DonatorList.isDonator(sender))
             {
                 rank = TELNET;
+            }
+            else if (entry.isTelnetAdmin() && TFM_DonatorList.isDonator(sender))
+            {
+                rank = TELNETD;
+            }
+            else if (entry.isTelnetAdmin() && TFM_DonatorList.isDonator(sender))
+            {
+                rank = TELNETDP;
+            }
+            else if (TFM_AdminList.isSuperAdmin(sender) && TFM_DonatorList.isDonator(sender))
+            {
+                rank = SUPERD;
+            }
+            else if (TFM_AdminList.isSuperAdmin(sender) && TFM_DonatorList.isDonatorPlus(sender))
+            {
+                rank = SUPERDP;
             }
             else
             {

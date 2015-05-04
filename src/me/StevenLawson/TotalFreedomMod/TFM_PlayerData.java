@@ -233,7 +233,7 @@ public class TFM_PlayerData
             @Override
             public void run()
             {
-                TFM_Util.adminAction("TotalFreedom", "Unfreezing " + player.getName(), false);
+                TFM_Util.adminAction("Automatic", "Unfreezing " + player.getName(), false);
                 setFrozen(false);
             }
 
@@ -391,7 +391,7 @@ public class TFM_PlayerData
             @Override
             public void run()
             {
-                TFM_Util.adminAction("TotalFreedom", "Unmuting " + player.getName(), false);
+                TFM_Util.adminAction("Automatic", "Unmuting " + player.getName(), false);
                 setMuted(false);
             }
 
