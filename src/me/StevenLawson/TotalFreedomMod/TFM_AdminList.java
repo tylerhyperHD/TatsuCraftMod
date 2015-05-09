@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import me.StevenLawson.TotalFreedomMod.Commands.Command_logs;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_Config;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_MainConfig;
@@ -621,7 +620,6 @@ public class TFM_AdminList
 
         final TFM_Admin superadmin = adminList.get(uuid);
         superadmin.setActivated(false);
-        Command_logs.deactivateSuperadmin(superadmin);
 
         saveAll();
         updateIndexLists();
@@ -651,7 +649,6 @@ public class TFM_AdminList
                 }
 
                 superadmin.setActivated(false);
-                Command_logs.deactivateSuperadmin(superadmin);
                 TFM_TwitterHandler.delTwitter(superadmin.getLastLoginName());
             }
         }

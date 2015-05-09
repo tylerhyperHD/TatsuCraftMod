@@ -3,6 +3,7 @@ package me.StevenLawson.TotalFreedomMod;
 import me.StevenLawson.TotalFreedomMod.Bridge.TFM_EssentialsBridge;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
+import me.StevenLawson.TotalFreedomMod.World.TFM_DonatorWorld;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -64,6 +65,10 @@ public class TFM_Heartbeat extends BukkitRunnable
                 try
                 {
                     if (world == TFM_AdminWorld.getInstance().getWorld() && TFM_AdminWorld.getInstance().getWeatherMode() != TFM_AdminWorld.WeatherMode.OFF)
+                    {
+                        continue;
+                    }
+                    if (world == TFM_DonatorWorld.getInstance().getWorld() && TFM_DonatorWorld.getInstance().getWeatherMode() != TFM_DonatorWorld.WeatherMode.OFF)
                     {
                         continue;
                     }

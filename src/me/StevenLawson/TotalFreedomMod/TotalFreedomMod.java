@@ -18,6 +18,7 @@ import me.StevenLawson.TotalFreedomMod.Listener.TFM_ServerListener;
 import me.StevenLawson.TotalFreedomMod.Listener.TFM_TelnetListener;
 import me.StevenLawson.TotalFreedomMod.Listener.TFM_WeatherListener;
 import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
+import me.StevenLawson.TotalFreedomMod.World.TFM_DonatorWorld;
 import me.StevenLawson.TotalFreedomMod.World.TFM_Flatlands;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -137,7 +138,14 @@ public class TotalFreedomMod extends JavaPlugin
         {
             TFM_Log.warning("Could not load world: AdminWorld");
         }
-
+        try
+        {
+            TFM_DonatorWorld.getInstance().getWorld();
+        }
+        catch (Exception ex)
+        {
+            TFM_Log.warning("Could not load world: DonatorWorld");
+        }
         // Initialize game rules
         TFM_GameRuleHandler.setGameRule(TFM_GameRuleHandler.TFM_GameRule.DO_DAYLIGHT_CYCLE, !TFM_ConfigEntry.DISABLE_NIGHT.getBoolean(), false);
         TFM_GameRuleHandler.setGameRule(TFM_GameRuleHandler.TFM_GameRule.DO_FIRE_TICK, TFM_ConfigEntry.ALLOW_FIRE_SPREAD.getBoolean(), false);

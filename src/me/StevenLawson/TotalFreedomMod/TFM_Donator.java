@@ -17,18 +17,20 @@ public class TFM_Donator
     private String lastLoginName;
     private final String loginMessage;
     private final boolean isDonatorPlus;
+    private final List<String> consoleAliases;
     private final List<String> ips;
     private Date lastLogin;
     private boolean isActivated;
 
-    public TFM_Donator(UUID uuid, String lastLoginName, Date lastLogin, String loginMessage, boolean isDonatorPlus, boolean isActivated)
+    public TFM_Donator(UUID uuid, String lastLoginName, Date lastLogin, String loginMessage, boolean isSeniorAdmin, boolean isActivated)
     {
         this.uuid = uuid;
         this.lastLoginName = lastLoginName;
         this.ips = new ArrayList<String>();
         this.lastLogin = lastLogin;
         this.loginMessage = loginMessage;
-        this.isDonatorPlus = isDonatorPlus;
+        this.isDonatorPlus = isSeniorAdmin;
+        this.consoleAliases = new ArrayList<String>();
         this.isActivated = isActivated;
     }
 
@@ -40,6 +42,7 @@ public class TFM_Donator
         this.lastLogin = TFM_Util.stringToDate(section.getString("last_login", TFM_Util.dateToString(new Date(0L))));
         this.loginMessage = section.getString("custom_login_message", "");
         this.isDonatorPlus = section.getBoolean("is_donator_plus", false);
+        this.consoleAliases = section.getStringList("console_aliases");
         this.isActivated = section.getBoolean("is_activated", true);
 
         for (Iterator<?> it = TFM_MainConfig.getList(TFM_ConfigEntry.NOADMIN_IPS).iterator(); it.hasNext();)
@@ -59,6 +62,7 @@ public class TFM_Donator
         output.append("- Last Login: ").append(TFM_Util.dateToString(lastLogin)).append("\n");
         output.append("- Custom Login Message: ").append(loginMessage).append("\n");
         output.append("- Is Donator+: ").append(isDonatorPlus).append("\n");
+        output.append("- Console Aliases: ").append(StringUtils.join(consoleAliases, ", ")).append("\n");
         output.append("- Is Activated: ").append(isActivated);
 
         return output.toString();
@@ -126,6 +130,11 @@ public class TFM_Donator
     public boolean isDonatorPlus()
     {
         return isDonatorPlus;
+    }
+
+    public List<String> getConsoleAliases()
+    {
+        return Collections.unmodifiableList(consoleAliases);
     }
 
     public void setLastLogin(Date lastLogin)

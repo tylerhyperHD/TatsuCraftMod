@@ -15,14 +15,14 @@ public enum TFM_PlayerRank
     DONATOR("a " + ChatColor.DARK_PURPLE + "Donator", ChatColor.DARK_PURPLE + "[Donator]"),
     DONATORPLUS("a " + ChatColor.LIGHT_PURPLE + "Donator+", ChatColor.LIGHT_PURPLE + "[Donator+]"),
     SUPER("a " + ChatColor.GOLD + "Super Admin", ChatColor.GOLD + "[SA]"),
-    SUPERD("a " + ChatColor.GOLD + "Super Admin " + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Donator", ChatColor.GOLD + "[SA " + ChatColor.DARK_GRAY + "+" + ChatColor.DARK_PURPLE + "Donator]"),
+    SUPERD("a " + ChatColor.GOLD + "Super Admin " + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Donator", ChatColor.GOLD + "[SA" + ChatColor.DARK_GRAY + "+" + ChatColor.DARK_PURPLE + "Donator]"),
     SUPERDP("a " + ChatColor.GOLD + "Super Admin " + ChatColor.AQUA + "and " + ChatColor.LIGHT_PURPLE + "Donator+", ChatColor.GOLD + "[SA " + ChatColor.DARK_GRAY + "+" + ChatColor.LIGHT_PURPLE + "Donator+]"),    
     TELNET("a " + ChatColor.DARK_GREEN + "Super Telnet Admin", ChatColor.DARK_GREEN + "[STA]"),
-    TELNETD("a " + ChatColor.DARK_GREEN + "Super Telnet Admin " + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Donator", ChatColor.DARK_GREEN + "[STA " + ChatColor.DARK_GRAY + "+" + ChatColor.DARK_PURPLE + "Donator]"),
-    TELNETDP("a " + ChatColor.DARK_GREEN + "Super Telnet Admin " + ChatColor.AQUA + "and " + ChatColor.LIGHT_PURPLE + "Donator+", ChatColor.DARK_GREEN + "[STA " + ChatColor.DARK_GRAY + "+" + ChatColor.LIGHT_PURPLE + "Donator+]"),
+    TELNETD("a " + ChatColor.DARK_GREEN + "Super Telnet Admin " + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Donator", ChatColor.DARK_GREEN + "[STA" + ChatColor.DARK_GRAY + "+" + ChatColor.DARK_PURPLE + "Donator]"),
+    TELNETDP("a " + ChatColor.DARK_GREEN + "Super Telnet Admin " + ChatColor.AQUA + "and " + ChatColor.LIGHT_PURPLE + "Donator+", ChatColor.DARK_GREEN + "[STA" + ChatColor.DARK_GRAY + "+" + ChatColor.LIGHT_PURPLE + "Donator+]"),
     SENIOR("a " + ChatColor.LIGHT_PURPLE + "Senior Admin", ChatColor.LIGHT_PURPLE + "[SrA]"),
-    SENIORD("a " + ChatColor.LIGHT_PURPLE + "Senior Admin " + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Donator", ChatColor.LIGHT_PURPLE + "[SrA " + ChatColor.DARK_GRAY + "+" + ChatColor.DARK_PURPLE + "Donator]"),
-    SENIORDP("a " + ChatColor.LIGHT_PURPLE + "Senior Admin " + ChatColor.AQUA + "and " + ChatColor.LIGHT_PURPLE + "Donator+", ChatColor.LIGHT_PURPLE + "[SrA " + ChatColor.DARK_GRAY + "+" + ChatColor.LIGHT_PURPLE + "Donator+]"),
+    SENIORD("a " + ChatColor.LIGHT_PURPLE + "Senior Admin " + ChatColor.AQUA + "and " + ChatColor.DARK_PURPLE + "Donator", ChatColor.LIGHT_PURPLE + "[SrA" + ChatColor.DARK_GRAY + "+" + ChatColor.DARK_PURPLE + "Donator]"),
+    SENIORDP("a " + ChatColor.LIGHT_PURPLE + "Senior Admin " + ChatColor.AQUA + "and " + ChatColor.LIGHT_PURPLE + "Donator+", ChatColor.LIGHT_PURPLE + "[SrA" + ChatColor.DARK_GRAY + "+" + ChatColor.LIGHT_PURPLE + "Donator+]"),
     EXECUTIVE("an " + ChatColor.DARK_RED + "Executive Senior Admin", ChatColor.DARK_RED + "[Exec]"),
     PERVERT("a " + ChatColor.LIGHT_PURPLE + "Pervert", ChatColor.LIGHT_PURPLE + "[Pervert]"),
     HO("a " + ChatColor.LIGHT_PURPLE + "Ho", ChatColor.LIGHT_PURPLE + "[Ho]"),
@@ -77,19 +77,18 @@ public enum TFM_PlayerRank
         {
             return IMPOSTOR;
         }
-
         if (DEVELOPERS.contains(sender.getName()))
         {
             return DEVELOPER;
         }
-        if (TFM_DonatorList.isDonatorPlus(sender))
-        {
-            return DONATORPLUS;
-        }       
-        else if (TFM_DonatorList.isDonator(sender))
-        {
-            return DONATOR;
-        }
+            if (TFM_DonatorList.isDonator(sender))
+            {
+                return DONATOR;    
+            }
+            if (TFM_DonatorList.isDonatorPlus(sender))
+            {
+                return DONATORPLUS;    
+            }
 
 
         final TFM_Admin entry = TFM_AdminList.getEntry((Player) sender);
@@ -151,6 +150,7 @@ public enum TFM_PlayerRank
             {
                 rank = SUPERDP;
             }
+            
             else
             {
                 rank = SUPER;

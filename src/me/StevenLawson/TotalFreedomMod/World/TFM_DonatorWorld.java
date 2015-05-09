@@ -37,7 +37,6 @@ public final class TFM_DonatorWorld extends TFM_CustomWorld
     private final Map<CommandSender, Boolean> accessCache = new HashMap<CommandSender, Boolean>();
     //
     private Long cacheLastCleared = null;
-    private Map<Player, Player> guestList = new HashMap<Player, Player>(); // Guest, Supervisor
     private WeatherMode weatherMode = WeatherMode.OFF;
     private TimeOfDay timeOfDay = TimeOfDay.INHERIT;
 
@@ -149,12 +148,6 @@ public final class TFM_DonatorWorld extends TFM_CustomWorld
             boolean canAccess = TFM_DonatorList.isDonator(player);
             if (!canAccess)
             {
-                Player supervisor = guestList.get(player);
-                canAccess = supervisor != null && supervisor.isOnline() && TFM_DonatorList.isDonator(supervisor);
-                if (!canAccess)
-                {
-                    guestList.remove(player);
-                }
             }
             cached = canAccess;
             accessCache.put(player, cached);

@@ -5,6 +5,7 @@ import java.util.List;
 import me.StevenLawson.TotalFreedomMod.TFM_DepreciationAggregator;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
+import me.StevenLawson.TotalFreedomMod.World.TFM_DonatorWorld;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -89,6 +90,14 @@ public class Command_ro extends TFM_Command
         catch (Exception ex)
         {
         }
+        World donatorWorld = null;
+        try
+        {
+            donatorWorld = TFM_DonatorWorld.getInstance().getWorld();
+        }
+        catch (Exception ex)
+        {
+        }
 
         int affected = 0;
         if (targetPlayer == null)
@@ -101,6 +110,7 @@ public class Command_ro extends TFM_Command
                 {
                     continue;
                 }
+                
 
                 for (final Material material : materials)
                 {

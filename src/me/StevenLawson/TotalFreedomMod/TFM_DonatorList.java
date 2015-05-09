@@ -25,16 +25,18 @@ public class TFM_DonatorList
 {
     private static final Map<UUID, TFM_Donator> donatorList;
     private static final Set<UUID> donatorUUIDs;
-    private static final Set<UUID> donatorPlusUUIDs;
-    private static final Set<String> superIps;
+    private static final Set<UUID> donatorpUUIDs;
+    private static final Set<String> seniorConsoleNames;
+    private static final Set<String> donatorIps;
     private static int cleanThreshold = 24 * 7; // 1 Week in hours
 
     static
     {
         donatorList = new HashMap<UUID, TFM_Donator>();
         donatorUUIDs = new HashSet<UUID>();
-        donatorPlusUUIDs = new HashSet<UUID>();
-        superIps = new HashSet<String>();
+        donatorpUUIDs = new HashSet<UUID>();
+        seniorConsoleNames = new HashSet<String>();
+        donatorIps = new HashSet<String>();
     }
 
     private TFM_DonatorList()
@@ -42,33 +44,38 @@ public class TFM_DonatorList
         throw new AssertionError();
     }
 
-    public static Set<UUID> getdonatorUUIDs()
+    public static Set<UUID> getDonatorUUIDs()
     {
         return Collections.unmodifiableSet(donatorUUIDs);
     }
 
-    public static Set<UUID> getdonatorPlusUUIDs()
+    public static Set<UUID> getDonatorPlusUUIDs()
     {
-        return Collections.unmodifiableSet(donatorPlusUUIDs);
+        return Collections.unmodifiableSet(donatorpUUIDs);
+    }
+
+    public static Set<String> getSeniorConsoleNames()
+    {
+        return Collections.unmodifiableSet(seniorConsoleNames);
     }
 
     public static Set<String> getDonatorIps()
     {
-        return Collections.unmodifiableSet(superIps);
+        return Collections.unmodifiableSet(donatorIps);
     }
 
     public static Set<String> getDonatorNames()
     {
         final Set<String> names = new HashSet<String>();
 
-        for (TFM_Donator donator : donatorList.values())
+        for (TFM_Donator admin : donatorList.values())
         {
-            if (!donator.isActivated())
+            if (!admin.isActivated())
             {
                 continue;
             }
 
-            names.add(donator.getLastLoginName());
+            names.add(admin.getLastLoginName());
         }
 
         return Collections.unmodifiableSet(names);
@@ -78,20 +85,20 @@ public class TFM_DonatorList
     {
         final Set<String> names = new HashSet<String>();
 
-        for (TFM_Donator donator : donatorList.values())
+        for (TFM_Donator admin : donatorList.values())
         {
-            if (!donator.isActivated())
+            if (!admin.isActivated())
             {
                 continue;
             }
 
-            names.add(donator.getLastLoginName().toLowerCase());
+            names.add(admin.getLastLoginName().toLowerCase());
         }
 
         return Collections.unmodifiableSet(names);
     }
 
-    public static Set<TFM_Donator> getAllDonators()
+    public static Set<TFM_Donator> getAlldonators()
     {
         return Sets.newHashSet(donatorList.values());
     }
@@ -100,7 +107,7 @@ public class TFM_DonatorList
     {
         if (!donatorList.containsKey(oldUuid))
         {
-            TFM_Log.warning("Could not set new UUID for donator " + donator.getLastLoginName() + ", donator is not loaded!");
+            TFM_Log.warning("Could not set new UUID for donator " + donator.getLastLoginName() + ", admin is not loaded!");
             return;
         }
 
@@ -141,15 +148,9 @@ public class TFM_DonatorList
 
         cleanThreshold = config.getInt("clean_threshold_hours", cleanThreshold);
 
-        // Parse old donators
-        if (config.isConfigurationSection("donators"))
-        {
-            parseOldConfig(config);
-        }
-
         if (!config.isConfigurationSection("donators"))
         {
-            TFM_Log.warning("Missing donators section in donator.yml.");
+            TFM_Log.warning("Missing donators section in donators.yml.");
             return;
         }
 
@@ -159,48 +160,53 @@ public class TFM_DonatorList
         {
             if (!TFM_UuidManager.isUniqueId(uuidString))
             {
-                TFM_Log.warning("Invalid Unique ID: " + uuidString + " in donator.yml, ignoring");
+                TFM_Log.warning("Invalid Unique ID: " + uuidString + " in superadmin.yml, ignoring");
                 continue;
             }
 
             final UUID uuid = UUID.fromString(uuidString);
 
-            final TFM_Donator donator = new TFM_Donator(uuid, section.getConfigurationSection(uuidString));
-            donatorList.put(uuid, donator);
+            final TFM_Donator superadmin = new TFM_Donator(uuid, section.getConfigurationSection(uuidString));
+            donatorList.put(uuid, superadmin);
         }
 
         updateIndexLists();
 
-        TFM_Log.info("Loaded " + donatorList.size() + " donators (" + donatorUUIDs.size() + " active) and " + superIps.size() + " IPs.");
+        TFM_Log.info("Loaded " + donatorList.size() + " donators (" + donatorUUIDs.size() + " active) and " + donatorIps.size() + " IPs.");
     }
 
     public static void updateIndexLists()
     {
         donatorUUIDs.clear();
-        donatorPlusUUIDs.clear();
-        superIps.clear();
+        donatorpUUIDs.clear();
+        seniorConsoleNames.clear();
+        donatorIps.clear();
 
-        for (TFM_Donator donator : donatorList.values())
+        for (TFM_Donator admin : donatorList.values())
         {
-            if (!donator.isActivated())
+            if (!admin.isActivated())
             {
                 continue;
             }
 
-            final UUID uuid = donator.getUniqueId();
+            final UUID uuid = admin.getUniqueId();
 
             donatorUUIDs.add(uuid);
 
-            for (String ip : donator.getIps())
+            for (String ip : admin.getIps())
             {
-                superIps.add(ip);
+                donatorIps.add(ip);
             }
 
-
-            if (donator.isDonatorPlus())
+            if (admin.isDonatorPlus())
             {
-                donatorPlusUUIDs.add(uuid);
+                donatorpUUIDs.add(uuid);
 
+                seniorConsoleNames.add(admin.getLastLoginName());
+                for (String alias : admin.getConsoleAliases())
+                {
+                    seniorConsoleNames.add(alias.toLowerCase());
+                }
             }
         }
 
@@ -216,23 +222,24 @@ public class TFM_DonatorList
         int counter = 0;
         int errors = 0;
 
-        for (String donator : config.getConfigurationSection("donators").getKeys(false))
+        for (String admin : config.getConfigurationSection("donators").getKeys(false))
         {
-            final UUID uuid = TFM_UuidManager.getUniqueId(donator);
+            final UUID uuid = TFM_UuidManager.getUniqueId(admin);
 
             if (uuid == null)
             {
                 errors++;
-                TFM_Log.warning("Could not convert donator " + donator + ", UUID could not be found!");
+                TFM_Log.warning("Could not convert donator " + admin + ", UUID could not be found!");
                 continue;
             }
 
             config.set("donators." + uuid + ".last_login_name", uuid);
-            config.set("donators." + uuid + ".is_activated", section.getBoolean(donator + ".is_activated"));
-            config.set("donators." + uuid + ".is_donator_plus", section.getBoolean(donator + ".is_donator_plus"));
-            config.set("donators." + uuid + ".last_login", section.getString(donator + ".last_login"));
-            config.set("donators." + uuid + ".custom_login_message", section.getString(donator + ".custom_login_message"));
-            config.set("donators." + uuid + ".ips", section.getStringList(donator + ".ips"));
+            config.set("donators." + uuid + ".is_activated", section.getBoolean(admin + ".is_activated"));
+            config.set("donators." + uuid + ".is_donator_plus", section.getBoolean(admin + ".is_senior_admin"));
+            config.set("donators." + uuid + ".last_login", section.getString(admin + ".last_login"));
+            config.set("donators." + uuid + ".custom_login_message", section.getString(admin + ".custom_login_message"));
+            config.set("donators." + uuid + ".console_aliases", section.getStringList(admin + ".console_aliases"));
+            config.set("donators." + uuid + ".ips", section.getStringList(admin + ".ips"));
 
             counter++;
         }
@@ -256,38 +263,40 @@ public class TFM_DonatorList
             final Entry<UUID, TFM_Donator> pair = it.next();
 
             final UUID uuid = pair.getKey();
-            final TFM_Donator donator = pair.getValue();
+            final TFM_Donator superadmin = pair.getValue();
 
-            config.set("donators." + uuid + ".last_login_name", donator.getLastLoginName());
-            config.set("donators." + uuid + ".is_activated", donator.isActivated());
-            config.set("donators." + uuid + ".is_donator_plus", donator.isDonatorPlus());
-            config.set("donators." + uuid + ".last_login", TFM_Util.dateToString(donator.getLastLogin()));
-            config.set("donators." + uuid + ".custom_login_message", donator.getCustomLoginMessage());
-            config.set("donators." + uuid + ".ips", TFM_Util.removeDuplicates(donator.getIps()));
+            config.set("donators." + uuid + ".last_login_name", superadmin.getLastLoginName());
+            config.set("donators." + uuid + ".is_activated", superadmin.isActivated());
+            config.set("donators." + uuid + ".is_donator_plus", superadmin.isDonatorPlus());
+            config.set("donators." + uuid + ".last_login", TFM_Util.dateToString(superadmin.getLastLogin()));
+            config.set("donators." + uuid + ".custom_login_message", superadmin.getCustomLoginMessage());
+            config.set("donators." + uuid + ".console_aliases", TFM_Util.removeDuplicates(superadmin.getConsoleAliases()));
+            config.set("donators." + uuid + ".ips", TFM_Util.removeDuplicates(superadmin.getIps()));
         }
 
         config.save();
     }
 
-    public static void save(TFM_Donator donator)
+    public static void save(TFM_Donator admin)
     {
-        if (!donatorList.containsValue(donator))
+        if (!donatorList.containsValue(admin))
         {
-            TFM_Log.warning("Could not save donator " + donator.getLastLoginName() + ", donator is not loaded!");
+            TFM_Log.warning("Could not save admin " + admin.getLastLoginName() + ", admin is not loaded!");
             return;
         }
 
         final TFM_Config config = new TFM_Config(TotalFreedomMod.plugin, TotalFreedomMod.DONATOR_FILENAME, true);
         config.load();
 
-        final UUID uuid = donator.getUniqueId();
+        final UUID uuid = admin.getUniqueId();
 
-        config.set("donators." + uuid + ".last_login_name", donator.getLastLoginName());
-        config.set("donators." + uuid + ".is_activated", donator.isActivated());
-        config.set("donators." + uuid + ".is_donator_plus", donator.isDonatorPlus());
-        config.set("donators." + uuid + ".last_login", TFM_Util.dateToString(donator.getLastLogin()));
-        config.set("donators." + uuid + ".custom_login_message", donator.getCustomLoginMessage());
-        config.set("donators." + uuid + ".ips", TFM_Util.removeDuplicates(donator.getIps()));
+        config.set("donators." + uuid + ".last_login_name", admin.getLastLoginName());
+        config.set("donators." + uuid + ".is_activated", admin.isActivated());
+        config.set("donators." + uuid + ".is_donator_plus", admin.isDonatorPlus());
+        config.set("donators." + uuid + ".last_login", TFM_Util.dateToString(admin.getLastLogin()));
+        config.set("donators." + uuid + ".custom_login_message", admin.getCustomLoginMessage());
+        config.set("donators." + uuid + ".console_aliases", TFM_Util.removeDuplicates(admin.getConsoleAliases()));
+        config.set("donators." + uuid + ".ips", TFM_Util.removeDuplicates(admin.getIps()));
 
         config.save();
     }
@@ -326,23 +335,23 @@ public class TFM_DonatorList
         while (it.hasNext())
         {
             final Entry<UUID, TFM_Donator> pair = it.next();
-            final TFM_Donator donator = pair.getValue();
+            final TFM_Donator superadmin = pair.getValue();
 
             if (fuzzy)
             {
-                for (String haystackIp : donator.getIps())
+                for (String haystackIp : superadmin.getIps())
                 {
                     if (TFM_Util.fuzzyIpMatch(needleIp, haystackIp, 3))
                     {
-                        return donator;
+                        return superadmin;
                     }
                 }
             }
             else
             {
-                if (donator.getIps().contains(needleIp))
+                if (superadmin.getIps().contains(needleIp))
                 {
-                    return donator;
+                    return superadmin;
                 }
             }
         }
@@ -351,13 +360,13 @@ public class TFM_DonatorList
 
     public static void updateLastLogin(Player player)
     {
-        final TFM_Donator donator = getEntry(player);
-        if (donator == null)
+        final TFM_Donator admin = getEntry(player);
+        if (admin == null)
         {
             return;
         }
-        donator.setLastLogin(new Date());
-        donator.setLastLoginName(player.getName());
+        admin.setLastLogin(new Date());
+        admin.setLastLoginName(player.getName());
         saveAll();
     }
 
@@ -366,14 +375,20 @@ public class TFM_DonatorList
         return isDonatorPlus(sender, false);
     }
 
-    public static boolean isDonatorPlus(CommandSender sender, boolean verifydonator)
+    public static boolean isDonatorPlus(CommandSender sender, boolean verifySuperadmin)
     {
-        if (verifydonator)
+        if (verifySuperadmin)
         {
             if (!isDonator(sender))
             {
                 return false;
             }
+        }
+
+        if (!(sender instanceof Player))
+        {
+            return seniorConsoleNames.contains(sender.getName())
+                    || (TFM_MainConfig.getBoolean(TFM_ConfigEntry.CONSOLE_IS_SENIOR) && sender.getName().equals("CONSOLE"));
         }
 
         final TFM_Donator entry = getEntry((Player) sender);
@@ -394,7 +409,7 @@ public class TFM_DonatorList
 
         final Player player = (Player) sender;
 
-        if (superIps.contains(TFM_Util.getIp(player)))
+        if (donatorIps.contains(TFM_Util.getIp(player)))
         {
             return true;
         }
@@ -406,6 +421,7 @@ public class TFM_DonatorList
 
         return false;
     }
+
 
     public static boolean isIdentityMatched(Player player)
     {
@@ -429,11 +445,11 @@ public class TFM_DonatorList
     }
 
     @Deprecated
-    public static boolean checkPartialdonatorIp(String ip, String name)
+    public static boolean checkPartialSuperadminIp(String ip, String name)
     {
         ip = ip.trim();
 
-        if (superIps.contains(ip))
+        if (donatorIps.contains(ip))
         {
             return true;
         }
@@ -441,7 +457,7 @@ public class TFM_DonatorList
         try
         {
             String matchIp = null;
-            for (String testIp : superIps)
+            for (String testIp : donatorIps)
             {
                 if (TFM_Util.fuzzyIpMatch(ip, testIp, 3))
                 {
@@ -479,7 +495,7 @@ public class TFM_DonatorList
         return false;
     }
 
-    public static boolean isdonatorImpostor(Player player)
+    public static boolean isDonatorImpostor(Player player)
     {
         if (donatorUUIDs.contains(TFM_UuidManager.getUniqueId(player)))
         {
@@ -489,7 +505,7 @@ public class TFM_DonatorList
         return false;
     }
 
-    public static void adddonator(OfflinePlayer player)
+    public static void addDonator(OfflinePlayer player)
     {
         final UUID uuid = TFM_UuidManager.getUniqueId(player);
         final String ip = TFM_Util.getIp(player);
@@ -497,16 +513,16 @@ public class TFM_DonatorList
 
         if (donatorList.containsKey(uuid))
         {
-            final TFM_Donator donator = donatorList.get(uuid);
-            donator.setActivated(true);
+            final TFM_Donator superadmin = donatorList.get(uuid);
+            superadmin.setActivated(true);
 
             if (player.isOnline())
             {
-                donator.setLastLogin(new Date());
+                superadmin.setLastLogin(new Date());
 
                 if (ip != null && canSuperIp)
                 {
-                    donator.addIp(ip);
+                    superadmin.addIp(ip);
                 }
             }
 
@@ -544,7 +560,7 @@ public class TFM_DonatorList
         updateIndexLists();
     }
 
-    public static void removedonator(OfflinePlayer player)
+    public static void removeDonator(OfflinePlayer player)
     {
         final UUID uuid = TFM_UuidManager.getUniqueId(player);
 
@@ -562,31 +578,31 @@ public class TFM_DonatorList
         updateIndexLists();
     }
 
-    public static void cleandonatorList(boolean verbose)
+    public static void cleanDonatorList(boolean verbose)
     {
         Iterator<Entry<UUID, TFM_Donator>> it = donatorList.entrySet().iterator();
         while (it.hasNext())
         {
             final Entry<UUID, TFM_Donator> pair = it.next();
-            final TFM_Donator donator = pair.getValue();
+            final TFM_Donator superadmin = pair.getValue();
 
-            if (!donator.isActivated() || donator.isDonatorPlus())
+            if (!superadmin.isActivated() || superadmin.isDonatorPlus())
             {
                 continue;
             }
 
-            final Date lastLogin = donator.getLastLogin();
+            final Date lastLogin = superadmin.getLastLogin();
             final long lastLoginHours = TimeUnit.HOURS.convert(new Date().getTime() - lastLogin.getTime(), TimeUnit.MILLISECONDS);
 
             if (lastLoginHours > cleanThreshold)
             {
                 if (verbose)
                 {
-                    TFM_Util.adminAction("TotalFreedomMod", "Deactivating donator " + donator.getLastLoginName() + ", inactive for " + lastLoginHours + " hours.", true);
+                    TFM_Util.adminAction("TotalFreedomMod", "Deactivating donator " + superadmin.getLastLoginName() + ", inactive for " + lastLoginHours + " hours.", true);
                 }
 
-                donator.setActivated(false);
-                TFM_TwitterHandler.delTwitter(donator.getLastLoginName());
+                superadmin.setActivated(false);
+                TFM_TwitterHandler.delTwitter(superadmin.getLastLoginName());
             }
         }
 

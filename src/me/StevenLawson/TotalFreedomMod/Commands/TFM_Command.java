@@ -2,6 +2,7 @@ package me.StevenLawson.TotalFreedomMod.Commands;
 
 import java.util.Collection;
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
+import me.StevenLawson.TotalFreedomMod.TFM_DonatorList;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
 import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
@@ -71,7 +72,9 @@ public abstract class TFM_Command
             TFM_Log.warning(commandClass.getName() + " is missing permissions annotation.");
             return true;
         }
-
+        
+        boolean isDonator = TFM_DonatorList.isDonator(commandSender);
+        boolean isDonatorPlus = false;
         boolean isSuper = TFM_AdminList.isSuperAdmin(commandSender);
         boolean isSenior = false;
 
@@ -79,7 +82,10 @@ public abstract class TFM_Command
         {
             isSenior = TFM_AdminList.isSeniorAdmin(commandSender);
         }
-
+        if (isDonator)
+        {
+            isDonatorPlus = TFM_DonatorList.isDonatorPlus(commandSender);
+        }
         final AdminLevel level = permissions.level();
         final SourceType source = permissions.source();
         final boolean blockHostConsole = permissions.blockHostConsole();
@@ -130,7 +136,14 @@ public abstract class TFM_Command
         {
             return false;
         }
-
+        if (level == AdminLevel.DONATOR && !isDonator)
+        {
+            return false;
+        }
+        if (level == AdminLevel.DONATORP && !isDonatorPlus)
+        {
+            return false;
+        }
         if (level == AdminLevel.OP && !senderPlayer.isOp())
         {
             return false;
