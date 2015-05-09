@@ -14,7 +14,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandPermissions(level = AdminLevel.OP, source = SourceType.BOTH)
+@CommandPermissions(level = AdminLevel.SENIOR, source = SourceType.BOTH)
 @CommandParameters(description = "Manage donators.", usage = "/<command> <list | clearme [ip] | <add | delete | info> <username>>", aliases = "dlist")
 public class Command_donatorlist extends TFM_Command
 {
