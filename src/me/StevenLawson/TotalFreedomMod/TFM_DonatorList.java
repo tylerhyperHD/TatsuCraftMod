@@ -133,7 +133,7 @@ public class TFM_DonatorList
         final TFM_Config config = new TFM_Config(TotalFreedomMod.plugin, TotalFreedomMod.DONATOR_FILENAME, true);
 
         config.load();
-        config.set("donators." + oldUuid.toString(), null);
+        config.set("donator." + oldUuid.toString(), null);
         config.save();
 
         save(newDonator);
@@ -213,43 +213,6 @@ public class TFM_DonatorList
         TFM_DonatorWorld.getInstance().wipeAccessCache();
     }
 
-    private static void parseOldConfig(TFM_Config config)
-    {
-        TFM_Log.info("Old donator configuration found, parsing...");
-
-        final ConfigurationSection section = config.getConfigurationSection("donators");
-
-        int counter = 0;
-        int errors = 0;
-
-        for (String admin : config.getConfigurationSection("donators").getKeys(false))
-        {
-            final UUID uuid = TFM_UuidManager.getUniqueId(admin);
-
-            if (uuid == null)
-            {
-                errors++;
-                TFM_Log.warning("Could not convert donator " + admin + ", UUID could not be found!");
-                continue;
-            }
-
-            config.set("donators." + uuid + ".last_login_name", uuid);
-            config.set("donators." + uuid + ".is_activated", section.getBoolean(admin + ".is_activated"));
-            config.set("donators." + uuid + ".is_donator_plus", section.getBoolean(admin + ".is_senior_admin"));
-            config.set("donators." + uuid + ".last_login", section.getString(admin + ".last_login"));
-            config.set("donators." + uuid + ".custom_login_message", section.getString(admin + ".custom_login_message"));
-            config.set("donators." + uuid + ".console_aliases", section.getStringList(admin + ".console_aliases"));
-            config.set("donators." + uuid + ".ips", section.getStringList(admin + ".ips"));
-
-            counter++;
-        }
-
-        config.set("donators", null);
-        config.save();
-
-        TFM_Log.info("Done! " + counter + " donators parsed, " + errors + " errors");
-    }
-
     public static void saveAll()
     {
         final TFM_Config config = new TFM_Config(TotalFreedomMod.plugin, TotalFreedomMod.DONATOR_FILENAME, true);
@@ -263,40 +226,40 @@ public class TFM_DonatorList
             final Entry<UUID, TFM_Donator> pair = it.next();
 
             final UUID uuid = pair.getKey();
-            final TFM_Donator superadmin = pair.getValue();
+            final TFM_Donator donator = pair.getValue();
 
-            config.set("donators." + uuid + ".last_login_name", superadmin.getLastLoginName());
-            config.set("donators." + uuid + ".is_activated", superadmin.isActivated());
-            config.set("donators." + uuid + ".is_donator_plus", superadmin.isDonatorPlus());
-            config.set("donators." + uuid + ".last_login", TFM_Util.dateToString(superadmin.getLastLogin()));
-            config.set("donators." + uuid + ".custom_login_message", superadmin.getCustomLoginMessage());
-            config.set("donators." + uuid + ".console_aliases", TFM_Util.removeDuplicates(superadmin.getConsoleAliases()));
-            config.set("donators." + uuid + ".ips", TFM_Util.removeDuplicates(superadmin.getIps()));
+            config.set("donators." + uuid + ".last_login_name", donator.getLastLoginName());
+            config.set("donators." + uuid + ".is_activated", donator.isActivated());
+            config.set("donators." + uuid + ".is_donator_plus", donator.isDonatorPlus());
+            config.set("donators." + uuid + ".last_login", TFM_Util.dateToString(donator.getLastLogin()));
+            config.set("donators." + uuid + ".custom_login_message", donator.getCustomLoginMessage());
+            config.set("donators." + uuid + ".console_aliases", TFM_Util.removeDuplicates(donator.getConsoleAliases()));
+            config.set("donators." + uuid + ".ips", TFM_Util.removeDuplicates(donator.getIps()));
         }
 
         config.save();
     }
 
-    public static void save(TFM_Donator admin)
+    public static void save(TFM_Donator donator)
     {
-        if (!donatorList.containsValue(admin))
+        if (!donatorList.containsValue(donator))
         {
-            TFM_Log.warning("Could not save admin " + admin.getLastLoginName() + ", admin is not loaded!");
+            TFM_Log.warning("Could not save admin " + donator.getLastLoginName() + ", admin is not loaded!");
             return;
         }
 
         final TFM_Config config = new TFM_Config(TotalFreedomMod.plugin, TotalFreedomMod.DONATOR_FILENAME, true);
         config.load();
 
-        final UUID uuid = admin.getUniqueId();
+        final UUID uuid = donator.getUniqueId();
 
-        config.set("donators." + uuid + ".last_login_name", admin.getLastLoginName());
-        config.set("donators." + uuid + ".is_activated", admin.isActivated());
-        config.set("donators." + uuid + ".is_donator_plus", admin.isDonatorPlus());
-        config.set("donators." + uuid + ".last_login", TFM_Util.dateToString(admin.getLastLogin()));
-        config.set("donators." + uuid + ".custom_login_message", admin.getCustomLoginMessage());
-        config.set("donators." + uuid + ".console_aliases", TFM_Util.removeDuplicates(admin.getConsoleAliases()));
-        config.set("donators." + uuid + ".ips", TFM_Util.removeDuplicates(admin.getIps()));
+        config.set("donator." + uuid + ".last_login_name", donator.getLastLoginName());
+        config.set("donator." + uuid + ".is_activated", donator.isActivated());
+        config.set("donator." + uuid + ".is_donator_plus", donator.isDonatorPlus());
+        config.set("donator." + uuid + ".last_login", TFM_Util.dateToString(donator.getLastLogin()));
+        config.set("donator." + uuid + ".custom_login_message", donator.getCustomLoginMessage());
+        config.set("donator." + uuid + ".console_aliases", TFM_Util.removeDuplicates(donator.getConsoleAliases()));
+        config.set("donator." + uuid + ".ips", TFM_Util.removeDuplicates(donator.getIps()));
 
         config.save();
     }

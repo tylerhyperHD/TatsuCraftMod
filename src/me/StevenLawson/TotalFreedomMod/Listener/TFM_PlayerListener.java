@@ -14,6 +14,7 @@ import me.StevenLawson.TotalFreedomMod.TFM_BanManager;
 import me.StevenLawson.TotalFreedomMod.TFM_CommandBlocker;
 import me.StevenLawson.TotalFreedomMod.TFM_DepreciationAggregator;
 import me.StevenLawson.TotalFreedomMod.TFM_DonatorList;
+import me.StevenLawson.TotalFreedomMod.Bridge.TFM_EssentialsBridge;
 import me.StevenLawson.TotalFreedomMod.TFM_Heartbeat;
 import me.StevenLawson.TotalFreedomMod.TFM_Jumppads;
 import me.StevenLawson.TotalFreedomMod.TFM_Log;
@@ -611,6 +612,198 @@ public class TFM_PlayerListener implements Listener
                 event.setCancelled(true);
                 return;
             }
+            final String getNickname = TFM_EssentialsBridge.getNickname(player.getName());
+            final String nickPlain = ChatColor.stripColor(TFM_Util.colorize(getNickname.trim()));
+            if (playerdata.usesRainbowNick())
+            {
+            final int nickColors = RANDOM.nextInt(15);
+            switch (nickColors)
+            // It's organized by the colors of the rainbow, because why not?
+            {
+                case 0:
+                {
+
+                    if (player == null)
+                    {
+                        break; //everything
+                    }
+
+                    final String setToNick = "§4" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+
+                case 1:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§c" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                case 2:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§6" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                case 3:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§e" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                case 4:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§2" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                case 5:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§a" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                case 6:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§b" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                case 7:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§3" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                case 8:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§1" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                case 9:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§9" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                case 10:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§d" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                case 11:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§5" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                // And then the non-rainbow colors - eww.
+                case 12:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§f" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                case 13:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§7" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+                case 14:
+                {
+
+                    if (player == null)
+                    {
+                        break;
+                    }
+
+                    final String setToNick = "§8" + nickPlain;
+                    TFM_EssentialsBridge.setNickname(player.getName(), setToNick);
+                    break;
+                }
+            }
+            }           
 
             // Finally, set message
             event.setMessage(message);
@@ -799,7 +992,7 @@ public class TFM_PlayerListener implements Listener
             if (!TFM_AdminList.isIdentityMatched(player))
             {
                 playerdata.setSuperadminIdVerified(false);
-                TFM_Util.bcastMsg("Warning: " + player.getName() + " is an admin, but is using an account not registered to one of their ip-list.", ChatColor.RED);
+                TFM_Util.bcastMsg("Warning: " + player.getName() + " is using an admin IP address, but their name is not registered to any admin.", ChatColor.RED);
             }
             else
             {
@@ -807,6 +1000,23 @@ public class TFM_PlayerListener implements Listener
                 TFM_AdminList.updateLastLogin(player);
             }
         }
+        if (TFM_DonatorList.isDonator(player))
+        {
+            player.setOp(true);
+
+            // Verify strict IP match
+            if (!TFM_DonatorList.isIdentityMatched(player))
+            {
+                playerdata.setDonatorIdVerified(false);
+                TFM_Util.bcastMsg("Warning: " + player.getName() + " is using a donator's IP address, but their name is not registered to any donator.", ChatColor.RED);
+            }
+            else
+            {
+                playerdata.setDonatorIdVerified(true);
+                TFM_DonatorList.updateLastLogin(player);
+            }
+        }
+        
 
         // Handle admin impostors
         if (TFM_AdminList.isAdminImpostor(player))
@@ -823,7 +1033,20 @@ public class TFM_PlayerListener implements Listener
         {
             TFM_Util.bcastMsg(ChatColor.AQUA + player.getName() + " is " + TFM_PlayerRank.getLoginMessage(player));
         }
-
+        else if (TFM_DonatorList.isDonatorImpostor(player))
+        {
+            TFM_Util.bcastMsg(ChatColor.AQUA + player.getName() + " seems to be posing as a donator!");
+            String iprange = TFM_Util.getFuzzyIp(player.getAddress().getAddress().getHostAddress());
+            TFM_Util.bcastMsg(player.getName() + " might be posing as a donator! IP: " + iprange, ChatColor.RED);
+            player.getInventory().clear();
+            player.setOp(false);
+            player.setGameMode(GameMode.SURVIVAL);
+            TFM_PlayerData.getPlayerData(player).setFrozen(true);
+        }
+        else if (TFM_DonatorList.isDonator(player))
+        {
+            TFM_Util.bcastMsg(ChatColor.AQUA + player.getName() + " is " + TFM_PlayerRank.getLoginMessage(player));
+        }
         //TODO: Cleanup
         String name = player.getName();
         if (TFM_Util.DEVELOPERS.contains(player.getName()))
@@ -839,51 +1062,29 @@ public class TFM_PlayerListener implements Listener
         else if (player.getName().equals("Reflet") || (player.getName().equals("Marth_") || (player.getName().equals("BuscusFan"))))
         {
             TFM_PlayerData.getPlayerData(player).setTag("&8[&4Executive&8]");
-        }
-        if (TFM_DonatorList.isDonator(player) && (TFM_AdminList.isSeniorAdmin(player)))
-        {
-            name = ChatColor.LIGHT_PURPLE + name;
-            TFM_PlayerData.getPlayerData(player).setTag("&8[&dSenior Admin &8+ &5Donator&8]");
-        }
-        if (TFM_DonatorList.isDonatorPlus(player) && (TFM_AdminList.isSeniorAdmin(player)))
-        {
-            name = ChatColor.LIGHT_PURPLE + name;
-            TFM_PlayerData.getPlayerData(player).setTag("&8[&dSenior Admin &8+ &dDonator+&8]");
-        }        
+        }       
         else if (TFM_AdminList.isSeniorAdmin(player))
         {
             name = ChatColor.LIGHT_PURPLE + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&dSenior Admin&8]");
         }
-        if (TFM_DonatorList.isDonator(player) && (TFM_AdminList.isTelnetAdmin(player, true)))
-        {
-            name = ChatColor.LIGHT_PURPLE + name;
-            TFM_PlayerData.getPlayerData(player).setTag("&8[&2Telnet Admin &8+ &5Donator&8]");
-        }
-        if (TFM_DonatorList.isDonatorPlus(player) && (TFM_AdminList.isTelnetAdmin(player, true)))
-        {
-            name = ChatColor.LIGHT_PURPLE + name;
-            TFM_PlayerData.getPlayerData(player).setTag("&8[&2Telnet Admin &8+ &dDonator+&8]");
-        }        
         else if (TFM_AdminList.isTelnetAdmin(player, true))
         {
             name = ChatColor.DARK_GREEN + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&2Telnet Admin&8]");
-        }
-        if (TFM_DonatorList.isDonator(player) && (TFM_AdminList.isSuperAdmin(player)))
-        {
-            name = ChatColor.LIGHT_PURPLE + name;
-            TFM_PlayerData.getPlayerData(player).setTag("&8[&bSuper Admin &8+ &5Donator&8]");
-        }
-        if (TFM_DonatorList.isDonatorPlus(player) && (TFM_AdminList.isSuperAdmin(player)))
-        {
-            name = ChatColor.LIGHT_PURPLE + name;
-            TFM_PlayerData.getPlayerData(player).setTag("&8[&bSuper Admin &8+ &dDonator+&8]");
         }        
         else if (TFM_AdminList.isSuperAdmin(player))
         {
             name = ChatColor.AQUA + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&BSuper Admin&8]");
+        }
+        else if (TFM_DonatorList.isDonatorPlus(player))
+        {
+            TFM_PlayerData.getPlayerData(player).setTag("&8[&dDonator+&8]");            
+        }
+        else if (TFM_DonatorList.isDonator(player))
+        {
+            TFM_PlayerData.getPlayerData(player).setTag("&8[&5Donator&8]");            
         }
 
         try

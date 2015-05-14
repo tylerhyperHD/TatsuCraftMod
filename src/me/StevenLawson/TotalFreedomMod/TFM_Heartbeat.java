@@ -4,17 +4,22 @@ import me.StevenLawson.TotalFreedomMod.Bridge.TFM_EssentialsBridge;
 import me.StevenLawson.TotalFreedomMod.Config.TFM_ConfigEntry;
 import me.StevenLawson.TotalFreedomMod.World.TFM_AdminWorld;
 import me.StevenLawson.TotalFreedomMod.World.TFM_DonatorWorld;
+import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import java.util.Random;
+import org.bukkit.ChatColor;
 
 public class TFM_Heartbeat extends BukkitRunnable
 {
     private static final long AUTO_KICK_TIME = (long) TFM_ConfigEntry.AUTOKICK_TIME.getInteger() * 1000L;
+    private static final long RAINBOW_NICK_TIME = (long) 1 * 1000L;
     private final TotalFreedomMod plugin;
     private final Server server;
     private static Long lastRan = null;
+    private static final Random RANDOM = new Random();
 
     public TFM_Heartbeat(TotalFreedomMod instance)
     {
@@ -50,8 +55,9 @@ public class TFM_Heartbeat extends BukkitRunnable
                 {
                     player.kickPlayer("Automatically kicked by server for inactivity.");
                 }
+                
             }
-        }
+            }
 
         if (TFM_ConfigEntry.AUTO_ENTITY_WIPE.getBoolean())
         {

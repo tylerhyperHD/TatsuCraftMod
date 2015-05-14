@@ -83,11 +83,13 @@ public class TFM_PlayerData
     private boolean inAdminchat = false;
     private boolean allCommandsBlocked = false;
     private boolean verifiedSuperadminId = false;
+    private boolean verifiedDonatorId = false;
     private boolean cmdspyEnabled = false;
     private boolean mp44Armed = false;
     private boolean mp44Firing = false;
     private boolean isOrbiting = false;
     private boolean mobThrowerEnabled = false;
+    private boolean usesRainbowNick = false;
     private int messageCount = 0;
     private int totalBlockDestroy = 0;
     private int totalBlockPlace = 0;
@@ -316,6 +318,18 @@ public class TFM_PlayerData
     {
         return this.mobThrowerEnabled;
     }
+    public boolean usesRainbowNick()
+    {
+        return this.usesRainbowNick;
+    }
+    public void enableRainbowNick()
+    {
+        this.usesRainbowNick = true;
+    }
+    public void disableRainbowNick()
+    {
+        this.usesRainbowNick = false;
+    }
 
     public void enqueueMob(LivingEntity mob)
     {
@@ -486,6 +500,14 @@ public class TFM_PlayerData
     public void setSuperadminIdVerified(boolean verifiedSuperadminId)
     {
         this.verifiedSuperadminId = verifiedSuperadminId;
+    }
+    public boolean isDonatorIdVerified()
+    {
+        return this.verifiedDonatorId;
+    }
+    public void setDonatorIdVerified(boolean verifiedSuperadminId)
+    {
+        this.verifiedDonatorId = verifiedDonatorId;
     }
 
     public String getLastCommand()
