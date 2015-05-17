@@ -48,24 +48,24 @@ public class Command_ship extends TFM_Command
       
       if ((p1.getName().equals("ImALuckyGuy")) && (p2.getName().equals("neroblackcat")))
       {
-        sender.sendMessage(ChatColor.RED + "In your dreams. Have a cookie for trying though.");
         final ItemStack heldItem = new ItemStack(Material.COOKIE);
         final ItemMeta heldItemMeta = heldItem.getItemMeta();
         heldItemMeta.setDisplayName((new StringBuilder()).append(ChatColor.RED).append("Cookie for trying.").append(ChatColor.LIGHT_PURPLE).append(" <3").toString());
         heldItem.setItemMeta(heldItemMeta);
         final int firstEmpty = shipperProbablyMiddie.getInventory().firstEmpty();
         shipperProbablyMiddie.getInventory().setItem(firstEmpty, heldItem);
+        shipperProbablyMiddie.kickPlayer(ChatColor.RED + "STOP RIGHT THERE, CRIMINAL SCUM." + ChatColor.WHITE + "\nIn your dreams, " + shipperProbablyMiddie.getName() + ". :D");
         return true;
       }
       if ((p1.getName().equals("neroblackcat")) && (p2.getName().equals("ImALuckyGuy")))
       {
-        sender.sendMessage(ChatColor.RED + "In your dreams. Have a cookie for trying though.");
         final ItemStack heldItem = new ItemStack(Material.COOKIE);
         final ItemMeta heldItemMeta = heldItem.getItemMeta();
         heldItemMeta.setDisplayName((new StringBuilder()).append(ChatColor.RED).append("Cookie for trying.").append(ChatColor.LIGHT_PURPLE).append(" <3").toString());
         heldItem.setItemMeta(heldItemMeta);
         final int firstEmpty = shipperProbablyMiddie.getInventory().firstEmpty();
         shipperProbablyMiddie.getInventory().setItem(firstEmpty, heldItem);
+        shipperProbablyMiddie.kickPlayer(ChatColor.RED + "STOP RIGHT THERE, CRIMINAL SCUM." + ChatColor.WHITE + "\nIn your dreams, " + shipperProbablyMiddie.getName() + ". :D");
         return true;
       }
       else
