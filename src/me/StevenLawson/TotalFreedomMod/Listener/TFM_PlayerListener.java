@@ -57,6 +57,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class TFM_PlayerListener implements Listener
 {
@@ -578,8 +579,11 @@ public class TFM_PlayerListener implements Listener
                 playerdata.setMuted(false);
             }
 
-            // Strip color from messages
-            message = ChatColor.stripColor(message);
+            // Strip color from messages, unless the player is a donator.
+            if (!TFM_DonatorList.isDonator(player))
+            {
+                message = ChatColor.stripColor(message);
+            }
 
             // Truncate messages that are too long - 100 characters is vanilla client max
             if (message.length() > 100)

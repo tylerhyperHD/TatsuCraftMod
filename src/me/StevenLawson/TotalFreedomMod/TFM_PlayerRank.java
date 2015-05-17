@@ -103,15 +103,15 @@ public enum TFM_PlayerRank
             {
                 return EXECUTIVE;
             }
-            if (sender.getName().equals("DeziThePenguin"))
+            if (TFM_UuidManager.getUniqueId(sender.getName()).toString().equals("4ebd76e2-1fdf-403d-8a72-5d517a6876f8"))
             {
                 return PERVERT;
             }
-            if (sender.getName().equals("neroblackcat"))
+            if (TFM_UuidManager.getUniqueId(sender.getName()).toString().equals("55c32d2c-1b9e-4aa1-9507-4c3078e70890"))
             {
                 return PERVERT;
             }
-            if (sender.getName().equals("OliverDatGuy"))
+            if (TFM_UuidManager.getUniqueId(sender.getName()).toString().equals("5330c607-19eb-42f5-b762-8764197a0047"))
             {
                 return BISH;
             }
