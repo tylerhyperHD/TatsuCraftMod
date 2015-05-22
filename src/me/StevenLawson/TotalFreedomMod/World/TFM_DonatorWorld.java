@@ -145,7 +145,7 @@ public final class TFM_DonatorWorld extends TFM_CustomWorld
         Boolean cached = accessCache.get(player);
         if (cached == null)
         {
-            boolean canAccess = TFM_DonatorList.isDonator(player);
+            boolean canAccess = TFM_DonatorList.isDonator(player) || (TFM_ConfigEntry.SERVER_EXECS.getList().contains(player.getName()));
             if (!canAccess)
             {
             }

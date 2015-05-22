@@ -1,5 +1,6 @@
 package me.StevenLawson.TotalFreedomMod;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 import java.util.Collections;
 import java.util.Date;
@@ -23,6 +24,7 @@ import org.bukkit.entity.Player;
 
 public class TFM_DonatorList
 {
+    public static final Function<Player, Boolean> DONATOR_SERVICE;    
     private static final Map<UUID, TFM_Donator> donatorList;
     private static final Set<UUID> donatorUUIDs;
     private static final Set<UUID> donatorpUUIDs;
@@ -37,6 +39,14 @@ public class TFM_DonatorList
         donatorpUUIDs = new HashSet<UUID>();
         seniorConsoleNames = new HashSet<String>();
         donatorIps = new HashSet<String>();
+        DONATOR_SERVICE = new Function<Player, Boolean>() {
+
+            @Override
+            public Boolean apply(Player f)
+            {
+                return isDonator(f);
+            }
+        };
     }
 
     private TFM_DonatorList()
