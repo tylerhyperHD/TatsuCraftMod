@@ -24,7 +24,8 @@ import org.bukkit.entity.Player;
 
 public class TFM_DonatorList
 {
-    public static final Function<Player, Boolean> DONATOR_SERVICE;    
+    public static final Function<Player, Boolean> DONATOR_SERVICE;
+    public static final Function<Player, Boolean> DONATORPLUS_SERVICE;
     private static final Map<UUID, TFM_Donator> donatorList;
     private static final Set<UUID> donatorUUIDs;
     private static final Set<UUID> donatorpUUIDs;
@@ -45,6 +46,14 @@ public class TFM_DonatorList
             public Boolean apply(Player f)
             {
                 return isDonator(f);
+            }
+        };
+        DONATORPLUS_SERVICE = new Function<Player, Boolean>() {
+
+            @Override
+            public Boolean apply(Player f)
+            {
+                return isDonatorPlus(f);
             }
         };
     }
