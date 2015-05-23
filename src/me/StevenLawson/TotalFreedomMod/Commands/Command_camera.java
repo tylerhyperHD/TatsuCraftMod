@@ -6,7 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandPermissions(level = AdminLevel.OP, source = SourceType.ONLY_IN_GAME)
+@CommandPermissions(level = AdminLevel.DONATOR, source = SourceType.ONLY_IN_GAME)
 @CommandParameters(description = "Use the camera", usage = "/<command> <selfie | throw>")
 public class Command_camera extends TFM_Command
 {
