@@ -1,6 +1,7 @@
 package me.StevenLawson.TotalFreedomMod.Bridge;
 
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
+import me.StevenLawson.TotalFreedomMod.TFM_DonatorList;
 import me.StevenLawson.TotalFreedomMod.TFM_ProtectedArea;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import me.StevenLawson.worldedit.LimitChangedEvent;
@@ -50,7 +51,7 @@ public class TFM_WorldEditListener implements Listener
             event.setCancelled(true);
         }
 
-        if (event.getLimit() < 0 || event.getLimit() > 10000)
+        if (event.getLimit() < 0 || event.getLimit() > 10000 && !TFM_DonatorList.isDonator(player))
         {
             player.setOp(false);
             TFM_Util.bcastMsg(event.getPlayer().getName() + " tried to set their WorldEdit limit to " + event.getLimit() + " and has been de-opped", ChatColor.RED);
