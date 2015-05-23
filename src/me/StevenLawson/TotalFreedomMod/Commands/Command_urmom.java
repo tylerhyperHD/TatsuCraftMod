@@ -6,8 +6,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandPermissions(level = AdminLevel.OP, source = SourceType.ONLY_IN_GAME)
-@CommandParameters(description = "Use the camera", usage = "/<command> <ban | sex>")
+@CommandPermissions(level = AdminLevel.DONATOR, source = SourceType.ONLY_IN_GAME)
+@CommandParameters(description = "Control their mom, lul", usage = "/<command> <ban | sex>")
 public class Command_urmom extends TFM_Command
 {
     @Override
