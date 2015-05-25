@@ -1,6 +1,7 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
+import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -36,11 +37,16 @@ public class Command_smite extends TFM_Command
 
     public static void smite(final Player player)
     {
+        TFM_PlayerData playerData = TFM_PlayerData.getPlayerData(player);
+        
         TFM_Util.bcastMsg(player.getName() + " has been a naughty, naughty boy.", ChatColor.RED);
 
         //Deop
         player.setOp(false);
 
+        // Make it so they can't re-op themselves instantly.
+        playerData.setSmited(true);
+        
         //Set gamemode to survival:
         player.setGameMode(GameMode.SURVIVAL);
 

@@ -1,5 +1,6 @@
 package me.StevenLawson.TotalFreedomMod.Commands;
 
+import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import org.bukkit.GameMode;
 import org.bukkit.ChatColor;
@@ -34,8 +35,10 @@ public class Command_opall extends TFM_Command
 
         for (Player player : server.getOnlinePlayers())
         {
+            TFM_PlayerData playerData = TFM_PlayerData.getPlayerData(player);
             player.setOp(true);
             player.sendMessage(TFM_Command.YOU_ARE_OP);
+            playerData.setSmited(false);
 
             if (doSetGamemode)
             {

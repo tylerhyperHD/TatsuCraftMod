@@ -616,6 +616,13 @@ public class TFM_PlayerListener implements Listener
                 event.setCancelled(true);
                 return;
             }
+            String nickname = TFM_EssentialsBridge.getNickname(player.getName());
+            
+            if (nickname != null)
+            {
+                
+            if (!TFM_DonatorList.isDonator(player))
+            {
             final String getNickname = TFM_EssentialsBridge.getNickname(player.getName());
             final String nickPlain = ChatColor.stripColor(TFM_Util.colorize(getNickname.trim()));
             if (playerdata.usesRainbowNick())
@@ -807,7 +814,9 @@ public class TFM_PlayerListener implements Listener
                     break;
                 }
             }
-            }           
+            }
+            }
+            }
 
             // Finally, set message
             event.setMessage(message);
@@ -1058,7 +1067,7 @@ public class TFM_PlayerListener implements Listener
             name = ChatColor.DARK_PURPLE + name;
             TFM_PlayerData.getPlayerData(player).setTag("&8[&5Developer&8]");
         }
-        else if (player.getName().equals("ImALuckyGuy"))
+        if (player.getName().equals("ImALuckyGuy"))
         {
             player.setPlayerListName(ChatColor.BLUE + player.getName());
             TFM_PlayerData.getPlayerData(player).setTag("&8[&9Owner&8]");

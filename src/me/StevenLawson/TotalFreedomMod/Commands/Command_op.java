@@ -2,6 +2,7 @@ package me.StevenLawson.TotalFreedomMod.Commands;
 
 import me.StevenLawson.TotalFreedomMod.TFM_AdminList;
 import me.StevenLawson.TotalFreedomMod.TFM_DepreciationAggregator;
+import me.StevenLawson.TotalFreedomMod.TFM_PlayerData;
 import me.StevenLawson.TotalFreedomMod.TFM_Util;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -52,6 +53,12 @@ public class Command_op extends TFM_Command
         }
 
         TFM_Util.bcastMsg(String.format("(%s: Opping %s)", sender.getName(), player.getName()), ChatColor.GRAY);
+        if (player != null)
+        {
+            Player oplayer = getPlayer(args[0]);
+            TFM_PlayerData playerData = TFM_PlayerData.getPlayerData(oplayer);
+            playerData.setSmited(false);
+        }
         player.setOp(true);
 
         return true;

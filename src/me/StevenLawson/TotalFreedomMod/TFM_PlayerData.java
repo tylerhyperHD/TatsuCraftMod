@@ -81,6 +81,7 @@ public class TFM_PlayerData
     private boolean isHalted = false;
     private boolean isCaged = false;
     private boolean inAdminchat = false;
+    private boolean isSmited = false;
     private boolean allCommandsBlocked = false;
     private boolean verifiedSuperadminId = false;
     private boolean verifiedDonatorId = false;
@@ -467,6 +468,16 @@ public class TFM_PlayerData
     {
         return lastMessage;
     }
+    
+    public void setSmited(boolean isSmited)
+    {
+        this.isSmited = isSmited;
+    }
+
+    public boolean isSmited()
+    {
+        return this.isSmited;
+    }
 
     public void setAdminChat(boolean inAdminchat)
     {
@@ -505,7 +516,7 @@ public class TFM_PlayerData
     {
         return this.verifiedDonatorId;
     }
-    public void setDonatorIdVerified(boolean verifiedSuperadminId)
+    public void setDonatorIdVerified(boolean verifiedDonatorId)
     {
         this.verifiedDonatorId = verifiedDonatorId;
     }
