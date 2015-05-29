@@ -120,6 +120,9 @@ public class TotalFreedomMod extends JavaPlugin
       
         // Start donator service too.
         server.getServicesManager().register(Function.class, TFM_DonatorList.DONATOR_SERVICE, plugin, ServicePriority.Normal);
+        
+        // Start donator+ service too.
+        server.getServicesManager().register(Function.class, TFM_DonatorList.DONATORPLUS_SERVICE, plugin, ServicePriority.Normal);
 
         final PluginManager pm = server.getPluginManager();
         pm.registerEvents(new TFM_EntityListener(), plugin);
