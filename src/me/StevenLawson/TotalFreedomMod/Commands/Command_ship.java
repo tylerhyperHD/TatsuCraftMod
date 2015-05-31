@@ -34,19 +34,31 @@ public class Command_ship extends TFM_Command
         return true;
       }
       
-      if (p1 == p2)
+      if ((p1 == p2) && (p1.getName().equalsIgnoreCase(sender.getName())) || (p1 == p2) && (p2.getName().equalsIgnoreCase(sender.getName())))
       {
-        sender.sendMessage(ChatColor.RED + "For some reason unknown, you just tried to ship yourself. Seriously? I don't believe it! I" + ChatColor.ITALIC + " really don't" + ChatColor.RESET + ChatColor.RED + "! Why you did, we'll never know, but one thing we do know is that you love yourself so much and that you're pretty stupid. Here, have a cookie.");
+        sender.sendMessage(ChatColor.RED + "For some unknown reason, you just tried to ship yourself with yourself. Seriously? I don't believe it! I" + ChatColor.ITALIC + " really don't" + ChatColor.RESET + ChatColor.RED + "! Why you did, we'll never know, but one thing we do know is that you love yourself so much and that you're pretty stupid. Here, have a cookie.");
             final ItemStack heldItem = new ItemStack(Material.COOKIE);
             final ItemMeta heldItemMeta = heldItem.getItemMeta();
-            heldItemMeta.setDisplayName((new StringBuilder()).append(ChatColor.WHITE).append("Idiot of ").append(ChatColor.DARK_GRAY).append("the week award").toString());
+            heldItemMeta.setDisplayName((new StringBuilder()).append(ChatColor.WHITE).append("Idiot of ").append(ChatColor.DARK_GRAY).append("the week ").append(ChatColor.WHITE).append("award").toString());
             heldItem.setItemMeta(heldItemMeta);
             final int firstEmpty = shipperProbablyMiddie.getInventory().firstEmpty();
             shipperProbablyMiddie.getInventory().setItem(firstEmpty, heldItem);
         return true;
       }
       
-      if ((p1.getName().equals("ImALuckyGuy")) && (p2.getName().equals("neroblackcat")))
+      if (p1 == p2)
+      {
+        sender.sendMessage(ChatColor.RED + "For some unknown reason, you just tried to ship the same person with themself. Seriously? I don't believe it! I" + ChatColor.ITALIC + " really don't" + ChatColor.RESET + ChatColor.RED + "! Why you did, we'll never know, but one thing we do know is that you love yourself so much and that you're pretty stupid. Here, have a cookie.");
+            final ItemStack heldItem = new ItemStack(Material.COOKIE);
+            final ItemMeta heldItemMeta = heldItem.getItemMeta();
+            heldItemMeta.setDisplayName((new StringBuilder()).append(ChatColor.WHITE).append("Idiot of ").append(ChatColor.DARK_GRAY).append("the week ").append(ChatColor.WHITE).append("award").toString());
+            heldItem.setItemMeta(heldItemMeta);
+            final int firstEmpty = shipperProbablyMiddie.getInventory().firstEmpty();
+            shipperProbablyMiddie.getInventory().setItem(firstEmpty, heldItem);
+        return true;
+      }
+      
+      if ((p1.getName().equalsIgnoreCase("ImALuckyGuy")) && (p2.getName().equalsIgnoreCase("neroblackcat")))
       {
         final ItemStack heldItem = new ItemStack(Material.COOKIE);
         final ItemMeta heldItemMeta = heldItem.getItemMeta();
@@ -57,7 +69,7 @@ public class Command_ship extends TFM_Command
         shipperProbablyMiddie.kickPlayer(ChatColor.RED + "STOP RIGHT THERE, CRIMINAL SCUM." + ChatColor.WHITE + "\nIn your dreams, " + shipperProbablyMiddie.getName() + ". :D");
         return true;
       }
-      if ((p1.getName().equals("neroblackcat")) && (p2.getName().equals("ImALuckyGuy")))
+      if ((p1.getName().equalsIgnoreCase("neroblackcat")) && (p2.getName().equalsIgnoreCase("ImALuckyGuy")))
       {
         final ItemStack heldItem = new ItemStack(Material.COOKIE);
         final ItemMeta heldItemMeta = heldItem.getItemMeta();
